@@ -8,9 +8,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Comprehensive test suite for baseline validation
-- Docker development environment with multi-PHP support
-- CHANGELOG.md and version management system
 
 ### Changed
 
@@ -21,6 +18,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 ### Security
+
+## [1.1.0] - 2025-08-26
+
+### Added
+- Comprehensive test suite for baseline validation (#4)
+- Docker development environment with multi-PHP support (#5)
+- CHANGELOG.md and version management system (#6)
+- Pattern documentation system with detailed guides (#7)
+- Performance optimization system with 73% reduction in pattern complexity (#8)
+- Community contribution process with templates and validation tools (#9)
+- Compatibility matrix testing system for comprehensive version testing (#10)
+- Optimized baseline files (`*-optimized.neon`) for better performance
+- Benchmark scripts for performance testing
+- Pattern validation tools for contributors
+- GitHub issue and PR templates
+- Code of Conduct and Security policy
+
+### Changed
+- Enhanced baseline patterns with PHPStan level 2+ support
+- Improved Laravel 11 baseline with mixed type handling
+- Updated Filament 3 baseline with comprehensive component patterns
+- Restructured documentation with use cases and examples
+
+### Fixed
+- PHPStan v2 compatibility issues on PHP 8.1
+- File naming convention consistency (level-X-Y.neon format)
 
 ## [1.0.0] - 2025-08-26
 
