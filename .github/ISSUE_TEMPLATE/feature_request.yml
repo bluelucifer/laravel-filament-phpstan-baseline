@@ -1,102 +1,129 @@
-name: Feature Request
-description: Suggest an idea for this project
+name: ✨ Feature Request
+description: Suggest a new feature or improvement
 title: "[Feature]: "
-labels: ["enhancement", "triage"]
+labels: ["enhancement"]
 assignees: []
+
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for suggesting a new feature! Please fill out the form below.
+        Thank you for suggesting a new feature! Please describe your idea clearly.
         
-  - type: textarea
-    id: problem
+  - type: checkboxes
+    id: checklist
     attributes:
-      label: Is your feature request related to a problem? Please describe.
-      description: A clear and concise description of what the problem is.
-      placeholder: I'm always frustrated when...
-    validations:
-      required: true
-      
-  - type: textarea
-    id: solution
-    attributes:
-      label: Describe the solution you'd like
-      description: A clear and concise description of what you want to happen.
-      placeholder: I would like to see...
-    validations:
-      required: true
-      
-  - type: textarea
-    id: alternatives
-    attributes:
-      label: Describe alternatives you've considered
-      description: A clear and concise description of any alternative solutions or features you've considered.
-      placeholder: I have also considered...
-    validations:
-      required: false
-      
-  - type: dropdown
-    id: priority
-    attributes:
-      label: Priority
-      description: How important is this feature to you?
+      label: Pre-submission checklist
       options:
-        - Low - Nice to have
-        - Medium - Would be helpful
-        - High - Critical for my project
-    validations:
-      required: true
-      
+        - label: I searched existing issues and feature requests
+          required: true
+        - label: I checked the documentation and roadmap
+          required: true
+        - label: This feature would benefit the community
+          required: true
+
   - type: dropdown
     id: category
     attributes:
       label: Feature Category
       description: What category does this feature fall into?
       options:
-        - New Baseline Configuration
-        - PHPStan Rule Enhancement
-        - Documentation Improvement
-        - Developer Experience
-        - Performance Optimization
-        - Testing & CI/CD
+        - New baseline patterns
+        - Documentation improvement
+        - Developer tools/scripts
+        - Configuration enhancements
+        - Performance optimization
+        - CI/CD integration
+        - IDE integration
+        - Testing utilities
         - Other
     validations:
       required: true
-      
+
   - type: textarea
-    id: use-case
+    id: problem
     attributes:
-      label: Use Case
-      description: Please describe your specific use case for this feature.
+      label: Problem Statement
+      description: What problem does this feature solve?
       placeholder: |
-        In my Laravel project, I need to...
-        This would help me by...
+        I'm currently facing the issue where...
+        This makes it difficult to...
+        The current solution requires...
     validations:
       required: true
-      
+
   - type: textarea
-    id: additional-context
+    id: solution
     attributes:
-      label: Additional context
-      description: Add any other context or screenshots about the feature request here.
+      label: Proposed Solution
+      description: Describe your proposed solution
+      placeholder: |
+        I would like to see...
+        This could be implemented by...
+        The feature would work like...
     validations:
-      required: false
-      
-  - type: checkboxes
-    id: contribution
+      required: true
+
+  - type: textarea
+    id: examples
     attributes:
-      label: Contribution
-      description: Would you be willing to contribute to this feature?
-      options:
-        - label: I would be willing to submit a PR for this feature
-          required: false
-          
-  - type: checkboxes
-    id: terms
+      label: Examples/Use Cases
+      description: Provide concrete examples of how this feature would be used
+      placeholder: |
+        Example 1:
+        - User wants to...
+        - They would use the feature to...
+        - The result would be...
+        
+        Example 2:
+        - When working with...
+        - The feature helps by...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
     attributes:
-      label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](CODE_OF_CONDUCT.md)
+      label: Alternative Solutions
+      description: What alternatives have you considered?
+      placeholder: |
+        I considered:
+        - Using existing tool X, but...
+        - Manual approach, but...
+        - Third-party solution, but...
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority Level
+      description: How important is this feature to you?
       options:
-        - label: I agree to follow this project's Code of Conduct
-          required: true
+        - Critical - Blocking my work
+        - High - Would significantly improve my workflow
+        - Medium - Nice to have
+        - Low - Minor improvement
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: implementation
+    attributes:
+      label: Implementation Considerations
+      description: Check all that apply
+      options:
+        - label: This feature might require breaking changes
+        - label: This could affect performance
+        - label: This needs extensive documentation
+        - label: This requires new dependencies
+        - label: I'm willing to help implement this feature
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any additional information that might be helpful
+      placeholder: |
+        Related issues:
+        Similar features in other tools:
+        Community feedback:
+        Implementation notes:

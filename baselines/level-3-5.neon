@@ -1,177 +1,128 @@
-# PHPStan Strict Level 3-5 Baseline
-# For transitioning from PHPStan level 3 to level 5
-# This baseline helps suppress common errors when adopting stricter type checking
+# PHPStan Level 3-5 Combined Baseline
+# For transitioning from basic to intermediate strictness
+# Last updated: 2025-08
+
+includes:
+    # Basic patterns (levels 0-2)
+    - laravel-11.neon
+    - filament-3.neon
+    - livewire-3.neon
 
 parameters:
     ignoreErrors:
-        # Level 3 → 4: Return type coverage
-        -
-            message: '#^Method .+ has no return type specified#'
-            paths:
-                - app/**/*.php
-                - tests/**/*.php
+        # ============================================
+        # Level 3-5 Specific Suppressions
+        # ============================================
         
-        -
-            message: '#^Method .+ return type has no value type specified in iterable type array#'
-            paths:
-                - app/**/*.php
+        # Allow mixed in certain contexts during transition
+        - '#Method .+::(handle|__invoke)\(\) has parameter \$.+ with no type specified#'
         
-        -
-            message: '#^Method .+ has parameter \$[a-zA-Z_]+ with no value type specified in iterable type array#'
-            paths:
-                - app/**/*.php
+        # Allow missing return types for factories/seeders
+        - '#Method .+Factory::.+ has no return type specified#'
+        - '#Method .+Seeder::.+ has no return type specified#'
         
-        # Level 4 → 5: Dead code detection
-        -
-            message: '#^Unreachable statement - code above always terminates#'
-            paths:
-                - app/**/*.php
+        # Allow test assertions without strict types
+        - '#Method .+Test::.+ has no return type specified#'
+        - '#Method .+TestCase::.+ has parameter \$.+ with no type specified#'
         
-        -
-            message: '#^Result of && is always false#'
-            paths:
-                - app/**/*.php
+        # ============================================
+        # Laravel/Filament Framework Specific Issues
+        # ============================================
         
-        -
-            message: '#^Result of \|\| is always true#'
-            paths:
-                - app/**/*.php
+        # Laravel translation functions return array|string but methods expect string
+        - '#Method .+::getNavigationGroup\(\) should return string\|null but returns \(array\|string\)#'
+        - '#Method .+::getNavigationLabel\(\) should return string but returns \(array\|string\)#'
+        - '#Method .+::getTitle\(\) should return string but returns \(array\|string\)#'
+        - '#Method .+::getModelLabel\(\) should return string but returns \(array\|string\)#'
+        - '#Method .+::getPluralModelLabel\(\) should return string but returns \(array\|string\)#'
+        - '#Method .+::getHeading\(\) should return string but returns \(array\|string\)#'
+        - '#Method .+::getRatingTrend\(\) should return string but returns \(array\|string\)#'
+        - '#Method .+::getNPSCategory\(\) should return string but returns \(array\|string\)#'
+        - '#Method .+::generateDescription\(\) should return string but returns \(array\|string\)#'
         
-        -
-            message: '#^Strict comparison using === between .+ and .+ will always evaluate to (true|false)#'
-            paths:
-                - app/**/*.php
+        # Anonymous functions with translation issues
+        - '#Anonymous function should return string but returns \(array\|string\)#'
         
-        -
-            message: '#^Else branch is unreachable because ternary operator condition is always true#'
-            paths:
-                - app/**/*.php
+        # Collection template type covariance issues
+        - '#Template type .+ of .+ is not covariant with template type .+ of .+#'
+        - '#Method .+ should return .+Collection<.+> but returns .+Collection<.+>#'
+        - '#Method .+ should return Illuminate\\Support\\Collection<.+> but returns Illuminate\\Support\\Collection<.+>#'
+        - '#Template type TValue on class Illuminate\\Support\\Collection is not covariant#'
         
-        # Type specification requirements
-        -
-            message: '#^Property .+::\$[a-zA-Z_]+ type has no value type specified in iterable type array#'
-            paths:
-                - app/**/*.php
+        # Mixed type issues in Laravel/Filament context
+        - '#Cannot call method .+ on mixed#'
+        - '#Argument of an invalid type mixed supplied for foreach, only iterables are supported#'
+        - '#Cannot access offset .+ on mixed#'
+        - '#Parameter .+ of .+ expects .+, mixed given#'
         
-        -
-            message: '#^Property .+::\$[a-zA-Z_]+ type has no value type specified in iterable type Collection#'
-            paths:
-                - app/**/*.php
+        # Event broadcasting return type flexibility
+        - '#Method .+::broadcastWith\(\) should return array<int, mixed> but returns array<string, mixed>#'
         
-        -
-            message: '#^PHPDoc tag @var for variable \$[a-zA-Z_]+ has no value type specified in iterable type array#'
-            paths:
-                - app/**/*.php
+        # Float to int conversion issues
+        - '#Method .+::calculateNPS\(\) should return int but returns float#'
         
-        # Union type handling
-        -
-            message: '#^Method .+ should return .+\|null but returns .+#'
-            paths:
-                - app/**/*.php
+        # Livewire property initialization issues
+        - '#Class .+Livewire.+ has an uninitialized property \$.+\. Give it default value or assign it in the constructor#'
         
-        -
-            message: '#^Property .+::\$[a-zA-Z_]+ \(.+\|null\) does not accept .+#'
-            paths:
-                - app/**/*.php
+        # Livewire listeners property type issues
+        - '#Property .+::\$listeners .+ does not accept default value of type .+#'
+        - '#Method .+::getListeners\(\) should return array<int, mixed> but returns array<.+>#'
         
-        -
-            message: '#^Parameter #\d+ \$[a-zA-Z_]+ of method .+ expects .+, .+\|null given#'
-            paths:
-                - app/**/*.php
+        # Additional array type covariance issues
+        - '#Method .+::calculateSpecialOffers\(\) should return array<.+> but returns array\{.+\}#'
         
-        # Null safety at mid-levels
-        -
-            message: '#^Cannot call method .+ on .+\|null#'
-            paths:
-                - app/**/*.php
+        # Model relationship covariance issues (Eloquent level 3+ specific)
+        - '#Method .+::.+\(\) should return Illuminate\\Database\\Eloquent\\Relations\\.+<.+> but returns Illuminate\\Database\\Eloquent\\Relations\\.+<.+, \$this\(.+\)>#'
         
-        -
-            message: '#^Cannot access property .+ on .+\|null#'
-            paths:
-                - app/**/*.php
+        # ============================================
+        # Level 3+ Specific Cast Issues
+        # ============================================
         
-        -
-            message: '#^Cannot access offset .+ on .+\|null#'
-            paths:
-                - app/**/*.php
+        # Mixed to string/int casting issues
+        - '#Cannot cast mixed to string#'
+        - '#Cannot cast mixed to int#'
+        - '#Cannot cast mixed to float#'
+        - '#Cannot cast mixed to bool#'
         
-        # Type narrowing issues
-        -
-            message: '#^Variable \$[a-zA-Z_]+ in isset\(\) always exists and is not nullable#'
-            paths:
-                - app/**/*.php
+        # Binary operations with mixed and error results (level 3+ specific)
+        - '#Binary operation "\." between mixed and .+ results in an error#'
+        - '#Binary operation "\*" between mixed and .+ results in an error#'
+        - '#Binary operation "\+" between mixed and .+ results in an error#'
+        - '#Binary operation "-" between mixed and .+ results in an error#'
+        - '#Binary operation "/" between mixed and .+ results in an error#'
+        - '#Binary operation "%" between mixed and .+ results in an error#'
+        - '#Binary operation "\*\*" between mixed and .+ results in an error#'
         
-        -
-            message: '#^Negated boolean expression is always (true|false)#'
-            paths:
-                - app/**/*.php
+        # Array return type issues for static methods
+        - '#Method .+::getStatusOptions\(\) should return array<int, mixed> but returns array<string, .+>#'
+        - '#Method .+::getTypeOptions\(\) should return array<int, mixed> but returns array<string, .+>#'
+        - '#Method .+::getGrades\(\) should return array<int, mixed> but returns array<string, .+>#'
+        - '#Method .+::getSources\(\) should return array<int, mixed> but returns array<string, .+>#'
         
-        -
-            message: '#^If condition is always true#'
-            paths:
-                - app/**/*.php
+        # ============================================
+        # Eloquent Model Cast and Return Type Issues
+        # ============================================
         
-        # Mixed type refinement
-        -
-            message: '#^Parameter .+ of method .+ expects .+, mixed given#'
-            paths:
-                - app/**/*.php
+        # Model casts method compatibility  
+        - '#Return type \(array<int, mixed>\) of method .+::casts\(\) should be compatible with return type \(array<string, string>\) of method .+::casts\(\)#'
+        - '#Method .+::casts\(\) should return array<int, mixed> but returns array<string, string>#'
         
-        -
-            message: '#^Method .+ should return .+ but returns mixed#'
-            paths:
-                - app/**/*.php
+        # Float/int return type flexibility
+        - '#Method .+::.+ should return int\|null but returns \(float\|int\)#'
+        - '#Method .+::.+ should return int but returns \(float\|int\)#'
+        - '#Method .+::.+ should return float but returns \(float\|int\)#'
         
-        -
-            message: '#^Property .+::\$[a-zA-Z_]+ \(.+\) does not accept mixed#'
-            paths:
-                - app/**/*.php
+        # BelongsToMany relationship covariance with pivot specification
+        - '#Method .+::.+\(\) should return .+BelongsToMany<.+, .+Pivot, .+> but returns .+BelongsToMany<.+, \$this\(.+\), .+Pivot, .+>#'
         
-        # Array shape requirements
-        -
-            message: '#^Method .+ return type has no signature specified for Closure#'
-            paths:
-                - app/**/*.php
+        # Additional method return type issues with translations
+        - '#Method .+::getTypes\(\) should return array<string, string> but returns array<string, \(array\|string\)>#'
+        - '#Method .+::.+Attribute\(\) should return string but returns \(array\|string\)#'
         
-        -
-            message: '#^Parameter \$[a-zA-Z_]+ of anonymous function has no type specified#'
-            paths:
-                - app/**/*.php
-                - routes/*.php
-        
-        -
-            message: '#^Anonymous function should return .+ but empty return statement found#'
-            paths:
-                - app/**/*.php
-        
-        # Generics and templates
-        -
-            message: '#^Method .+ return type with generic class .+ does not specify its types#'
-            paths:
-                - app/**/*.php
-        
-        -
-            message: '#^Parameter .+ of method .+ has generic class .+ but does not specify its types#'
-            paths:
-                - app/**/*.php
-        
-        -
-            message: '#^Property .+::\$[a-zA-Z_]+ with generic class .+ does not specify its types#'
-            paths:
-                - app/**/*.php
-        
-        # Unused code detection
-        -
-            message: '#^Call to function is_null\(\) with .+ will always evaluate to false#'
-            paths:
-                - app/**/*.php
-        
-        -
-            message: '#^Call to function is_array\(\) with .+ will always evaluate to true#'
-            paths:
-                - app/**/*.php
-        
-        -
-            message: '#^Call to function is_string\(\) with .+ will always evaluate to (true|false)#'
-            paths:
-                - app/**/*.php
+        # ============================================
+        # Remaining Issues for Manual Review
+        # ============================================
+        # Note: Some errors are intentionally not suppressed and should be reviewed:
+        # - Call to undefined methods on specific models (getPdfUrl, approve, reject)
+        # - Complex type variance in specific contexts
+        # - Project-specific business logic type mismatches
