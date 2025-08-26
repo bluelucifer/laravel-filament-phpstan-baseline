@@ -1,0 +1,130 @@
+# Laravel 11.x PHPStan Baseline (Optimized)
+# Performance-optimized patterns with consolidation
+# Last updated: 2025-08
+
+parameters:
+    ignoreErrors:
+        # ============================================
+        # Eloquent ORM - Consolidated
+        # ============================================
+        
+        # All Eloquent builder methods (including where*, scope*, etc.)
+        - '#^Call to an undefined method Illuminate\\Database\\(Eloquent|Query)\\Builder::(where[A-Z]\w*|scope[A-Z]\w*|\w+)$#'
+        
+        # Model dynamic methods and scopes
+        - '#^Call to an undefined method .+::(where[A-Z]\w*|scope[A-Z]\w*)\(\)$#'
+        
+        # Eloquent relationships - all types
+        - '#^Generic type Illuminate\\Database\\Eloquent\\Relations\\(HasMany|HasOne|BelongsTo|BelongsToMany|MorphMany|MorphOne|MorphTo|HasManyThrough|HasOneThrough).+ does not specify all template types$#'
+        
+        # Model properties
+        - '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model::\$\w+$#'
+        
+        # Collection methods - both types
+        - '#^Call to an undefined method Illuminate\\(Support|Database\\Eloquent)\\Collection::\w+$#'
+        
+        # ============================================
+        # HTTP & Request - Consolidated
+        # ============================================
+        
+        # Request properties and methods
+        - '#^(Access to an undefined property|Call to an undefined method) Illuminate\\Http\\Request::\$?\w+$#'
+        
+        # Request validation and input
+        - '#^(Cannot access offset .+ on mixed|Parameter #1 \$key of method Illuminate\\Http\\Request::input\(\) expects .+, mixed given)$#'
+        
+        # Form request validation
+        - '#^Method .+::validated\(\) return type has no value type specified$#'
+        
+        # ============================================
+        # Helpers & Facades - Consolidated
+        # ============================================
+        
+        # All helper functions returning mixed
+        - '#^Function (config|trans|__|env|old|session|request|route|url|asset|mix|vite|app)\(\) return type has no value type$#'
+        
+        # All Facade methods
+        - '#^Call to an undefined static method .+Facades\\[\w\\]+::\w+\(\)$#'
+        
+        # Cache/Session returns
+        - '#^Method .+::(cache|session|get|remember)\(\) return type has no value type$#'
+        
+        # ============================================
+        # Service Container - Consolidated
+        # ============================================
+        
+        # Container and app helper
+        - '#^(Call to an undefined method .+Container::make\(\)|Function app\(\) return type has no value type)$#'
+        
+        # Service provider methods
+        - '#^Method .+ServiceProvider::(boot|register)\(\) has no return type specified$#'
+        
+        # ============================================
+        # Database & Migrations - Consolidated
+        # ============================================
+        
+        # Schema builder and migrations
+        - '#^(Call to an undefined method Illuminate\\Database\\Schema\\Blueprint::\w+|Method .+::(up|down)\(\) has no return type specified)$#'
+        
+        # Query builder aggregates
+        - '#^Method .+::(count|sum|avg|min|max)\(\) return type has no value type$#'
+        
+        # ============================================
+        # Validation - Consolidated
+        # ============================================
+        
+        # Validation rules and messages
+        - '#^(Property .+::\$rules type has no value type specified|Method .+::messages\(\) return type has no value type specified)$#'
+        
+        # ============================================
+        # Events, Jobs & Queues - Consolidated
+        # ============================================
+        
+        # Event, Listener, Job handle methods
+        - '#^Method .+::(handle|dispatch)\(\) has no return type specified$#'
+        
+        # Dispatcher and Queue methods
+        - '#^Call to an undefined method .+(Dispatcher|Queue)::\w+$#'
+        
+        # ============================================
+        # Storage & Files - Consolidated
+        # ============================================
+        
+        # Storage and file upload methods
+        - '#^Call to an undefined (static )?method (Illuminate\\Support\\Facades\\Storage|Illuminate\\Http\\UploadedFile)::\w+$#'
+        
+        # ============================================
+        # Auth & Authorization - Consolidated
+        # ============================================
+        
+        # Authenticatable methods and properties
+        - '#^(Call to an undefined method|Access to an undefined property) .+Authenticatable::\$?\w+$#'
+        
+        # Authorization methods
+        - '#^Method .+::authorize\(\) has no return type specified$#'
+        
+        # ============================================
+        # Common Patterns - Consolidated
+        # ============================================
+        
+        # JSON columns (all common names)
+        - '#^Property .+::\$(meta|data|options|settings|preferences|configuration|attributes|properties|extra|payload|body|content|details) .+ mixed$#'
+        
+        # Date/Time methods
+        - '#^Call to an undefined method Carbon\\Carbon::\w+$#'
+        
+        # Higher-order proxies and Stringable
+        - '#^(Access to an undefined property Illuminate\\Support\\HigherOrderCollectionProxy::\$\w+|Call to an undefined method Illuminate\\Support\\Stringable::\w+)$#'
+        
+        # Testing
+        - '#^(Call to an undefined method .+TestCase::\w+|Property .+Test::\$\w+ has no type specified)$#'
+        
+        # ============================================
+        # Generic Type Issues - Consolidated
+        # ============================================
+        
+        # Parameters with no type or mixed
+        - '#^(Method .+::handle\(\) has parameter \$\w+ with no type specified|Parameter \$\w+ of method .+ expects .+, mixed given)$#'
+        
+        # Properties without types
+        - '#^Property .+::\$\w+ (has no type specified|type has no value type specified)$#'

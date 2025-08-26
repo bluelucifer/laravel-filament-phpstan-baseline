@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 Documentation
+    url: https://github.com/bluelucifer/laravel-filament-phpstan-baseline/tree/main/docs
+    about: Check our comprehensive documentation for guides and examples
+  - name: 💬 Discussions
+    url: https://github.com/bluelucifer/laravel-filament-phpstan-baseline/discussions
+    about: Ask questions and discuss ideas with the community
+  - name: 🔧 PHPStan Documentation
+    url: https://phpstan.org/user-guide/getting-started
+    about: Official PHPStan documentation for general questions

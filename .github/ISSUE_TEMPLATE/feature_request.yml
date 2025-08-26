@@ -1,0 +1,129 @@
+name: ✨ Feature Request
+description: Suggest a new feature or improvement
+title: "[Feature]: "
+labels: ["enhancement"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for suggesting a new feature! Please describe your idea clearly.
+        
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission checklist
+      options:
+        - label: I searched existing issues and feature requests
+          required: true
+        - label: I checked the documentation and roadmap
+          required: true
+        - label: This feature would benefit the community
+          required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Feature Category
+      description: What category does this feature fall into?
+      options:
+        - New baseline patterns
+        - Documentation improvement
+        - Developer tools/scripts
+        - Configuration enhancements
+        - Performance optimization
+        - CI/CD integration
+        - IDE integration
+        - Testing utilities
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem does this feature solve?
+      placeholder: |
+        I'm currently facing the issue where...
+        This makes it difficult to...
+        The current solution requires...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe your proposed solution
+      placeholder: |
+        I would like to see...
+        This could be implemented by...
+        The feature would work like...
+    validations:
+      required: true
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Examples/Use Cases
+      description: Provide concrete examples of how this feature would be used
+      placeholder: |
+        Example 1:
+        - User wants to...
+        - They would use the feature to...
+        - The result would be...
+        
+        Example 2:
+        - When working with...
+        - The feature helps by...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternative Solutions
+      description: What alternatives have you considered?
+      placeholder: |
+        I considered:
+        - Using existing tool X, but...
+        - Manual approach, but...
+        - Third-party solution, but...
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority Level
+      description: How important is this feature to you?
+      options:
+        - Critical - Blocking my work
+        - High - Would significantly improve my workflow
+        - Medium - Nice to have
+        - Low - Minor improvement
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: implementation
+    attributes:
+      label: Implementation Considerations
+      description: Check all that apply
+      options:
+        - label: This feature might require breaking changes
+        - label: This could affect performance
+        - label: This needs extensive documentation
+        - label: This requires new dependencies
+        - label: I'm willing to help implement this feature
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any additional information that might be helpful
+      placeholder: |
+        Related issues:
+        Similar features in other tools:
+        Community feedback:
+        Implementation notes:

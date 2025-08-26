@@ -1,93 +1,150 @@
-# Laravel Filament PHPStan Baseline Documentation
+# PHPStan Baseline Documentation
 
-Welcome to the comprehensive documentation for the Laravel Filament PHPStan baseline patterns. This documentation helps you understand, use, and contribute to the baseline configurations.
+Welcome to the comprehensive documentation for Laravel & Filament PHPStan baseline patterns.
 
-## Table of Contents
+## 📚 Documentation Structure
 
-- [Pattern Documentation](#pattern-documentation)
-- [Code Examples](#code-examples)
-- [Usage Guides](#usage-guides)
-- [Contributing](#contributing)
+### Pattern Documentation
+Detailed explanations of PHPStan patterns for different packages:
 
-## Pattern Documentation
+- **Laravel Patterns**
+  - [Eloquent ORM](patterns/laravel/eloquent-orm.md) - Model properties, relationships, query builders
+  - [HTTP Requests](patterns/laravel/http-requests.md) - Form requests, validation, input handling
+  - [Service Container](patterns/laravel/service-container.md) - Dependency injection, facades, helpers
 
-Detailed explanations of each pattern category:
+- **Filament Patterns**
+  - [Forms](patterns/filament/forms.md) - Form components, validation, lifecycle
+  - [Tables](patterns/filament/tables.md) - Table columns, filters, actions
+  - [Resources](patterns/filament/resources.md) - Resource configuration, pages, relations
 
-### Laravel Framework Patterns
-- [Eloquent ORM Patterns](patterns/eloquent-orm.md) - Model relationships, queries, and magic methods
-- [HTTP & Request Patterns](patterns/http-request.md) - Request handling and validation
-- [Laravel Helpers & Facades](patterns/helpers-facades.md) - Helper functions and facade usage
-- [Service Container](patterns/service-container.md) - Dependency injection and service resolution
-- [Routing & Middleware](patterns/routing-middleware.md) - Route parameters and middleware patterns
-- [Database & Migrations](patterns/database-migrations.md) - Schema operations and query building
-- [Validation](patterns/validation.md) - Form validation and custom rules
-- [Events & Listeners](patterns/events-listeners.md) - Event system patterns
-- [Jobs & Queues](patterns/jobs-queues.md) - Background job processing
-- [Caching](patterns/caching.md) - Cache operations and storage
-- [File Storage](patterns/file-storage.md) - File handling and uploads
-- [Authentication & Authorization](patterns/auth.md) - User authentication and authorization
+- **Livewire Patterns**
+  - [Components](patterns/livewire/components.md) - Component properties, methods, lifecycle
+  - [Properties](patterns/livewire/properties.md) - Public properties, computed properties
 
-### Filament Admin Panel Patterns
-- [Filament Forms](patterns/filament-forms.md) - Form components and state management
-- [Filament Tables](patterns/filament-tables.md) - Table columns, filters, and actions
-- [Filament Resources](patterns/filament-resources.md) - Resource management and CRUD operations
-- [Filament Pages](patterns/filament-pages.md) - Custom pages and lifecycle hooks
-- [Filament Actions](patterns/filament-actions.md) - Action callbacks and modals
-- [Filament Notifications](patterns/filament-notifications.md) - Notification system
-- [Filament Widgets](patterns/filament-widgets.md) - Dashboard widgets and charts
-- [Filament Navigation](patterns/filament-navigation.md) - Navigation and breadcrumbs
-- [Filament Infolists](patterns/filament-infolists.md) - Information display components
-- [Filament Relationships](patterns/filament-relationships.md) - Relation managers
-- [Filament Authorization](patterns/filament-authorization.md) - Policy integration
+### Use Cases
+Real-world implementation guides:
 
-### Additional Patterns
-- [Livewire Integration](patterns/livewire-integration.md) - Livewire component patterns
-- [Package-Specific Patterns](patterns/package-specific.md) - Spatie packages, Laravel Excel, etc.
+- [New Project Setup](use-cases/new-project-setup.md) - Step-by-step setup for new projects
+- [Legacy Migration](use-cases/legacy-migration.md) - Migrating existing projects to PHPStan
+- [CI Integration](use-cases/ci-integration.md) - Adding PHPStan to CI/CD pipelines
+- [Team Onboarding](use-cases/team-onboarding.md) - Getting your team up to speed
 
-## Code Examples
+## 🎯 Quick Reference
 
-Real-world code examples demonstrating baseline usage:
+### Choosing the Right Baseline
 
-- [Basic Laravel Application](examples/basic-laravel.md)
-- [Filament Admin Panel](examples/filament-admin.md)
-- [Complex Data Processing](examples/complex-processing.md)
-- [Custom Components](examples/custom-components.md)
+| Your Situation | Recommended Baselines |
+|----------------|----------------------|
+| New Laravel 11 project | `laravel-11.neon` + `level-0-2.neon` |
+| Existing Laravel 10 project | `laravel-10.neon` + `level-3-5.neon` |
+| Filament admin panel | `filament-3.neon` + framework baseline |
+| Livewire components | `livewire-3.neon` + framework baseline |
+| Strict type checking | `*-strict.neon` variants + `level-6-8.neon` |
 
-## Usage Guides
+### Common Commands
 
-Step-by-step guides for different scenarios:
+```bash
+# Install
+composer require --dev bluelucifer/laravel-filament-phpstan
 
-- [Getting Started](guides/getting-started.md)
-- [Customizing Baselines](guides/customization.md)
-- [Performance Tuning](guides/performance.md)
-- [Troubleshooting](guides/troubleshooting.md)
-- [Migration Guide](guides/migration.md)
+# Analyze
+vendor/bin/phpstan analyse
 
-## Contributing
+# Generate baseline for existing errors
+vendor/bin/phpstan analyse --generate-baseline
 
-Learn how to contribute to the baseline patterns:
+# Check specific level
+vendor/bin/phpstan analyse --level=5
 
-- [Pattern Contribution](guides/contributing-patterns.md)
-- [Documentation Guidelines](guides/documentation-guidelines.md)
-- [Testing Patterns](guides/testing.md)
+# Clear cache
+vendor/bin/phpstan clear-result-cache
+```
 
-## Quick Start
+## 🔍 Understanding Patterns
 
-1. **Install the package:**
-   ```bash
-   composer require --dev laravel-filament/phpstan-baseline
-   ```
+### Pattern Anatomy
 
-2. **Choose your baseline:**
-   ```neon
-   includes:
-       - vendor/laravel-filament/phpstan-baseline/baselines/laravel-11.neon
-       - vendor/laravel-filament/phpstan-baseline/baselines/filament-3.neon
-   ```
+```neon
+-
+    message: '#^Call to undefined method .+::whereEmail\(\)#'
+    paths:
+        - app/**/*.php
+    count: 5  # Optional: expected occurrences
+```
 
-3. **Run PHPStan:**
-   ```bash
-   vendor/bin/phpstan analyse
-   ```
+- **message**: Regular expression matching the error
+- **paths**: Files where this pattern applies
+- **count**: Expected number of occurrences (optional)
 
-For more detailed instructions, see the [Getting Started Guide](guides/getting-started.md).
+### Writing Custom Patterns
+
+1. **Be specific** - Avoid overly broad patterns
+2. **Use anchors** - `^` and `$` for exact matches
+3. **Document why** - Add comments explaining the pattern
+4. **Test thoroughly** - Ensure patterns don't hide real issues
+
+## 📈 Level Progression Strategy
+
+### Level 0-2: Foundation
+- Focus on undefined variables and methods
+- Add basic type declarations
+- Fix obvious issues
+
+### Level 3-5: Improvement
+- Add return types to all methods
+- Fix mixed type issues
+- Add property types
+
+### Level 6-8: Excellence
+- Handle nullable types properly
+- Add generic types
+- Fix all type mismatches
+
+### Level 9-10: Perfection
+- Complete type coverage
+- No suppressed errors
+- Full generic support
+
+## 🤝 Contributing
+
+We welcome contributions! See our [Contributing Guide](../CONTRIBUTING.md) for details.
+
+### How to Contribute Patterns
+
+1. Identify a false positive
+2. Write a specific pattern
+3. Test with real projects
+4. Submit a PR with explanation
+
+## 📊 Pattern Statistics
+
+- **Total Patterns**: 500+
+- **Laravel Patterns**: 150+
+- **Filament Patterns**: 200+
+- **Livewire Patterns**: 100+
+- **Community Contributors**: Growing!
+
+## 🔗 Useful Links
+
+- [PHPStan Documentation](https://phpstan.org/user-guide/getting-started)
+- [Larastan Documentation](https://github.com/nunomaduro/larastan)
+- [Writing Custom Rules](https://phpstan.org/developing-extensions/rules)
+- [Regular Expression Testing](https://regex101.com/)
+
+## ❓ FAQ
+
+**Q: Should I use strict baselines from the start?**
+A: No, start with basic baselines and gradually increase strictness.
+
+**Q: Can I use multiple baselines together?**
+A: Yes! Combine framework, package, and level baselines as needed.
+
+**Q: How often should I update the baselines?**
+A: Update when you upgrade frameworks or encounter new false positives.
+
+**Q: What if a pattern is too broad?**
+A: Report it as an issue so we can make it more specific.
+
+## 📝 License
+
+This documentation is part of the Laravel & Filament PHPStan Baseline project, licensed under MIT.
