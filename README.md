@@ -12,6 +12,7 @@ This repository provides curated PHPStan baseline configurations and ignore patt
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [Patterns Documentation](#patterns-documentation)
+- [Version Management](#version-management)
 
 ## 🤔 Why This Exists
 
@@ -241,10 +242,51 @@ When contributing new baseline files, please follow these naming conventions:
 
 ## 📊 Statistics
 
+- **Current Version**: 1.0.0
 - **Patterns Maintained**: 150+
 - **Projects Using**: Growing!
 - **Contributors**: Welcome!
 - **Last Updated**: 2025-08
+
+## 📋 Version Management
+
+This project follows [Semantic Versioning](https://semver.org/) and maintains a detailed [CHANGELOG.md](CHANGELOG.md) following the [Keep a Changelog](https://keepachangelog.com/) format.
+
+### Version Policy
+
+- **Major (X.0.0)**: Breaking changes, major structural modifications
+- **Minor (X.Y.0)**: New baseline files, new features, backward-compatible changes  
+- **Patch (X.Y.Z)**: Pattern fixes, bug fixes, documentation updates
+
+### Release Process
+
+All releases are automated via GitHub Actions:
+
+1. **Create Release**: Use the release script or create a git tag
+2. **Automated Testing**: CI/CD runs full test suite and validation
+3. **GitHub Release**: Automatically created with changelog extraction
+4. **Packagist Update**: Composer package automatically updated
+
+### Release Commands
+
+```bash
+# Check current version
+./scripts/version.sh
+
+# Create a new release (dry run first)
+./scripts/release.sh 1.1.0 --dry-run
+
+# Actually create the release
+./scripts/release.sh 1.1.0
+
+# Manual git tag (triggers automated release)
+git tag -a v1.1.0 -m "Release version 1.1.0"
+git push origin v1.1.0
+```
+
+### Version History
+
+See [CHANGELOG.md](CHANGELOG.md) for detailed version history and [GitHub Releases](https://github.com/bluelucifer/laravel-filament-phpstan-baseline/releases) for downloadable assets.
 
 ## 📄 License
 
@@ -256,6 +298,8 @@ MIT License - Use freely in your projects!
 - [Larastan Package](https://github.com/nunomaduro/larastan)
 - [Laravel Documentation](https://laravel.com/docs)
 - [Filament Documentation](https://filamentphp.com/docs)
+- [Releases](https://github.com/bluelucifer/laravel-filament-phpstan-baseline/releases)
+- [Packagist](https://packagist.org/packages/bluelucifer/laravel-filament-phpstan)
 
 ---
 
