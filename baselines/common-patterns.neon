@@ -1,0 +1,53 @@
+# Common PHPStan Baseline Patterns
+# Shared patterns used across multiple framework configurations
+# Last updated: 2025-08
+
+parameters:
+    ignoreErrors:
+        # ============================================
+        # Common Mixed Type Issues
+        # ============================================
+        
+        # Array access on mixed types
+        - '#Cannot access offset .+ on mixed#'
+        - '#Offset .+ does not exist on array{#'
+        
+        # Property access on mixed types
+        - '#Cannot access property .+ on mixed#'
+        
+        # ============================================
+        # Common Method Issues
+        # ============================================
+        
+        # Authorization methods without return types
+        - '#Method .+::authorize\(\) has no return type specified#'
+        
+        # Validation methods without return types
+        - '#Method .+::messages\(\) return type has no value type specified#'
+        - '#Property .+::\$rules type has no value type specified#'
+        
+        # ============================================
+        # Common State Management
+        # ============================================
+        
+        # Parameter state expectations
+        - '#Parameter \$state of .+ expects .+, mixed given#'
+        
+        # ============================================
+        # Common Logic Issues
+        # ============================================
+        
+        # Conditional statements
+        - '#If condition is always true#'
+        - '#If condition is always false#'
+        
+        # Method result usage
+        - '#Result of method .+::dispatch\(\) \(void\) is used#'
+        
+        # ============================================
+        # Common Array Issues
+        # ============================================
+        
+        # Nullable arrays
+        - '#Cannot access offset .+ on array\|null#'
+        - '#Parameter \#1 \$array of function .+ expects array, array\|null given#'
