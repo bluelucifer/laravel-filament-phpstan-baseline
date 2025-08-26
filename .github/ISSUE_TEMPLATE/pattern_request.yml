@@ -1,0 +1,140 @@
+name: 🔧 Pattern Request
+description: Request a new baseline pattern or suggest modifications
+title: "[Pattern]: "
+labels: ["enhancement", "pattern"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Request a new pattern or suggest modifications to existing baseline patterns.
+        
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission checklist
+      options:
+        - label: I searched existing issues and patterns documentation
+          required: true
+        - label: I verified this pattern doesn't already exist in the baselines
+          required: true
+        - label: I tested the proposed pattern locally
+          required: true
+
+  - type: dropdown
+    id: framework
+    attributes:
+      label: Framework/Package
+      description: Which framework or package does this pattern relate to?
+      options:
+        - Laravel Core
+        - Filament Admin Panel
+        - Livewire
+        - Spatie Packages
+        - Laravel Excel
+        - Other (specify in description)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: pattern-type
+    attributes:
+      label: Pattern Type
+      description: What type of pattern is this?
+      options:
+        - New pattern request
+        - Existing pattern modification
+        - Pattern removal suggestion
+        - Pattern optimization
+    validations:
+      required: true
+
+  - type: textarea
+    id: phpstan-error
+    attributes:
+      label: PHPStan Error
+      description: The full PHPStan error message that needs to be ignored
+      render: text
+      placeholder: |
+        Call to an undefined method App\Models\User::customMethod().
+        
+        > app/Http/Controllers/UserController.php:25
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-pattern
+    attributes:
+      label: Proposed Pattern
+      description: The regex pattern you're proposing
+      render: neon
+      placeholder: |
+        - '#Call to an undefined method App\\Models\\[A-Za-z]+::[a-zA-Z]+\(\)#'
+    validations:
+      required: true
+
+  - type: textarea
+    id: code-example
+    attributes:
+      label: Code Example
+      description: Provide a minimal code example that triggers this pattern
+      render: php
+      placeholder: |
+        <?php
+        
+        use App\Models\User;
+        
+        $user = User::find(1);
+        $user->customMethod(); // This should be ignored
+    validations:
+      required: true
+
+  - type: textarea
+    id: justification
+    attributes:
+      label: Justification
+      description: Why should this pattern be included/modified/removed?
+      placeholder: |
+        This pattern is needed because:
+        - It's a common Laravel idiom used in...
+        - It's a legitimate framework feature that...
+        - The current pattern doesn't cover...
+    validations:
+      required: true
+
+  - type: textarea
+    id: testing
+    attributes:
+      label: Testing Information
+      description: How did you test this pattern?
+      placeholder: |
+        I tested this pattern by:
+        1. Creating a sample project with...
+        2. Adding the pattern to my local baseline...
+        3. Running PHPStan and confirming...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternative Solutions
+      description: Are there any alternative approaches you considered?
+      placeholder: |
+        I considered:
+        - Using a more specific pattern, but...
+        - Adding type hints instead, but...
+        - Using a different approach, but...
+
+  - type: checkboxes
+    id: impact
+    attributes:
+      label: Impact Assessment
+      description: Check all that apply
+      options:
+        - label: This affects multiple files/classes
+        - label: This is framework-specific behavior
+        - label: This pattern could have false positives
+        - label: This pattern might need regular updates
+        - label: This affects performance significantly

@@ -1,0 +1,105 @@
+name: Baseline Configuration Request
+description: Request a new baseline configuration for specific package versions
+title: "[Baseline]: "
+labels: ["baseline", "enhancement", "triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Request a new baseline configuration for specific Laravel/Filament/package versions.
+        
+  - type: input
+    id: laravel-version
+    attributes:
+      label: Laravel Version
+      description: What Laravel version do you need a baseline for?
+      placeholder: e.g., 11.x, 10.x, 9.x
+    validations:
+      required: true
+      
+  - type: input
+    id: filament-version
+    attributes:
+      label: Filament Version
+      description: What Filament version do you need a baseline for?
+      placeholder: e.g., 3.2, 3.1, 3.0
+    validations:
+      required: true
+      
+  - type: input
+    id: livewire-version
+    attributes:
+      label: Livewire Version
+      description: What Livewire version are you using?
+      placeholder: e.g., 3.x, 2.x
+    validations:
+      required: false
+      
+  - type: textarea
+    id: additional-packages
+    attributes:
+      label: Additional Packages
+      description: List any additional packages that should be considered for this baseline
+      placeholder: |
+        - spatie/laravel-permission: ^6.0
+        - livewire/livewire: ^3.0
+        - etc.
+    validations:
+      required: false
+      
+  - type: dropdown
+    id: phpstan-level
+    attributes:
+      label: Target PHPStan Level
+      description: What PHPStan level should this baseline target?
+      options:
+        - Level 0-2 (Basic)
+        - Level 3-5 (Intermediate)
+        - Level 6-8 (Advanced)
+        - Level 9-10 (Strict)
+        - All levels (separate baselines)
+    validations:
+      required: true
+      
+  - type: textarea
+    id: specific-errors
+    attributes:
+      label: Specific Errors or Issues
+      description: Are there specific PHPStan errors or issues you're encountering?
+      placeholder: |
+        Please paste any specific PHPStan errors you're getting with this combination.
+      render: shell
+    validations:
+      required: false
+      
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use Case Description
+      description: Describe your project and why you need this specific baseline configuration.
+      placeholder: |
+        My project uses Laravel X with Filament Y because...
+        This baseline would help by...
+    validations:
+      required: true
+      
+  - type: checkboxes
+    id: testing
+    attributes:
+      label: Testing Commitment
+      description: Are you willing to help test the baseline configuration?
+      options:
+        - label: I'm willing to test the baseline configuration in my project
+          required: false
+        - label: I can provide feedback on the effectiveness of the baseline
+          required: false
+          
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](CODE_OF_CONDUCT.md)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

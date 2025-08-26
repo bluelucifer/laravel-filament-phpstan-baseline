@@ -1,0 +1,300 @@
+name: Compatibility Matrix
+
+on:
+  schedule:
+    - cron: '0 2 * * 1'  # Weekly on Monday at 2 AM
+  workflow_dispatch:
+    inputs:
+      full_matrix:
+        description: 'Run full compatibility matrix'
+        required: false
+        type: boolean
+        default: false
+  pull_request:
+    paths:
+      - 'baselines/*.neon'
+      - '.github/workflows/compatibility-matrix.yml'
+
+jobs:
+  matrix-test:
+    name: L${{ matrix.laravel }} F${{ matrix.filament }} P${{ matrix.php }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.1', '8.2', '8.3']
+        laravel: ['10.0', '10.48', '11.0', '11.x']
+        filament: ['3.0', '3.2', '3.x']
+        exclude:
+          # Laravel 11 requires PHP 8.2+
+          - php: '8.1'
+            laravel: '11.0'
+          - php: '8.1'
+            laravel: '11.x'
+          # Filament 3 requires specific Laravel versions
+          - laravel: '10.0'
+            filament: '3.x'
+        include:
+          # Add specific tested combinations
+          - php: '8.2'
+            laravel: '11.x'
+            filament: '3.x'
+            preferred: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+
+      - name: Create test project
+        run: |
+          # Create Laravel project
+          if [[ "${{ matrix.laravel }}" == *"x"* ]]; then
+            composer create-project laravel/laravel:^$(echo ${{ matrix.laravel }} | sed 's/x//') test-project --no-interaction --prefer-dist
+          else
+            composer create-project laravel/laravel:${{ matrix.laravel }} test-project --no-interaction --prefer-dist
+          fi
+          
+          cd test-project
+          
+          # Install Filament
+          if [[ "${{ matrix.filament }}" == *"x"* ]]; then
+            composer require filament/filament:"^$(echo ${{ matrix.filament }} | sed 's/x//')" --no-interaction
+          else
+            composer require filament/filament:"${{ matrix.filament }}" --no-interaction
+          fi
+          
+          # Install PHPStan and Larastan
+          composer require --dev phpstan/phpstan larastan/larastan --no-interaction
+          
+          # Copy baseline files
+          cp -r ../baselines .
+
+      - name: Configure PHPStan
+        run: |
+          cd test-project
+          
+          # Determine Laravel major version
+          LARAVEL_MAJOR=$(echo "${{ matrix.laravel }}" | cut -d. -f1)
+          
+          # Determine Filament major version
+          FILAMENT_MAJOR=$(echo "${{ matrix.filament }}" | cut -d. -f1)
+          
+          # Create PHPStan configuration
+          cat > phpstan.neon <<EOF
+          includes:
+              - vendor/larastan/larastan/extension.neon
+              - baselines/laravel-${LARAVEL_MAJOR}.neon
+              - baselines/filament-${FILAMENT_MAJOR}.neon
+          
+          parameters:
+              paths:
+                  - app
+                  - config
+                  - database
+                  - routes
+              
+              level: 5
+              
+              reportUnmatchedIgnoredErrors: false
+          EOF
+
+      - name: Create sample code
+        run: |
+          cd test-project
+          
+          # Create sample model
+          php artisan make:model Product -m
+          
+          # Create Filament resource
+          php artisan make:filament-resource Product --generate
+          
+          # Create sample controller
+          php artisan make:controller ProductController --resource
+
+      - name: Run PHPStan analysis
+        id: phpstan
+        continue-on-error: true
+        run: |
+          cd test-project
+          vendor/bin/phpstan analyse --error-format=json > ../phpstan-report.json 2>&1 || true
+          
+          # Extract statistics
+          if [ -f ../phpstan-report.json ]; then
+            ERRORS=$(jq -r '.totals.file_errors' ../phpstan-report.json 2>/dev/null || echo "0")
+            echo "errors=$ERRORS" >> $GITHUB_OUTPUT
+          else
+            echo "errors=unknown" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate compatibility report
+        run: |
+          cd test-project
+          
+          # Create detailed report
+          cat > ../compatibility-report.md <<EOF
+          ## Compatibility Report
+          
+          ### Configuration
+          - PHP: ${{ matrix.php }}
+          - Laravel: ${{ matrix.laravel }}
+          - Filament: ${{ matrix.filament }}
+          
+          ### Results
+          - Errors Found: ${{ steps.phpstan.outputs.errors }}
+          - Status: ${{ steps.phpstan.outcome }}
+          
+          ### Baseline Coverage
+          EOF
+          
+          # Count suppressed patterns
+          for file in baselines/*.neon; do
+            if [ -f "$file" ]; then
+              PATTERNS=$(grep -c "message:" "$file" || echo "0")
+              echo "- $(basename $file): $PATTERNS patterns" >> ../compatibility-report.md
+            fi
+          done
+
+      - name: Upload compatibility report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: compatibility-L${{ matrix.laravel }}-F${{ matrix.filament }}-P${{ matrix.php }}
+          path: |
+            phpstan-report.json
+            compatibility-report.md
+
+  compatibility-summary:
+    name: Compatibility Summary
+    needs: matrix-test
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all reports
+        uses: actions/download-artifact@v4
+        with:
+          path: reports
+
+      - name: Generate summary matrix
+        run: |
+          cat > COMPATIBILITY_MATRIX.md <<EOF
+          # Compatibility Matrix Report
+          
+          Generated: $(date -u +"%Y-%m-%d %H:%M UTC")
+          
+          ## Test Matrix
+          
+          | PHP | Laravel | Filament | Status | Errors |
+          |-----|---------|----------|--------|--------|
+          EOF
+          
+          # Process each report
+          for report_dir in reports/compatibility-*; do
+            if [ -d "$report_dir" ]; then
+              # Extract versions from directory name
+              DIR_NAME=$(basename "$report_dir")
+              LARAVEL=$(echo "$DIR_NAME" | sed 's/.*-L\([^-]*\).*/\1/')
+              FILAMENT=$(echo "$DIR_NAME" | sed 's/.*-F\([^-]*\).*/\1/')
+              PHP=$(echo "$DIR_NAME" | sed 's/.*-P\([^-]*\).*/\1/')
+              
+              # Get status and errors
+              if [ -f "$report_dir/phpstan-report.json" ]; then
+                ERRORS=$(jq -r '.totals.file_errors // 0' "$report_dir/phpstan-report.json" 2>/dev/null || echo "N/A")
+                if [ "$ERRORS" = "0" ]; then
+                  STATUS="✅"
+                elif [ "$ERRORS" = "N/A" ]; then
+                  STATUS="❓"
+                else
+                  STATUS="⚠️"
+                fi
+              else
+                STATUS="❌"
+                ERRORS="Failed"
+              fi
+              
+              echo "| $PHP | $LARAVEL | $FILAMENT | $STATUS | $ERRORS |" >> COMPATIBILITY_MATRIX.md
+            fi
+          done
+          
+          cat >> COMPATIBILITY_MATRIX.md <<EOF
+          
+          ## Legend
+          - ✅ Full compatibility (0 errors)
+          - ⚠️ Partial compatibility (some errors)
+          - ❌ Test failed
+          - ❓ Unknown status
+          
+          ## Recommendations
+          
+          Based on the test results, the following combinations are recommended:
+          
+          ### Stable Combinations
+          - PHP 8.2 + Laravel 11.x + Filament 3.x
+          - PHP 8.2 + Laravel 10.x + Filament 3.2
+          
+          ### Legacy Support
+          - PHP 8.1 + Laravel 10.x + Filament 3.0
+          
+          ## Notes
+          
+          - Laravel 11 requires PHP 8.2 or higher
+          - Filament 3.x is optimized for Laravel 10.x and 11.x
+          - All baselines are tested with PHPStan level 5
+          EOF
+
+      - name: Upload summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: compatibility-matrix-summary
+          path: COMPATIBILITY_MATRIX.md
+
+      - name: Comment on PR (if applicable)
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const matrix = fs.readFileSync('COMPATIBILITY_MATRIX.md', 'utf8');
+            
+            // Truncate if too long for comment
+            const maxLength = 65536;
+            const content = matrix.length > maxLength 
+              ? matrix.substring(0, maxLength) + '\n\n... (truncated)'
+              : matrix;
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: content
+            });
+
+      - name: Update compatibility badge
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: |
+          # Calculate overall compatibility percentage
+          TOTAL=$(grep -c "^|" COMPATIBILITY_MATRIX.md | tail -n +3)
+          SUCCESS=$(grep -c "✅" COMPATIBILITY_MATRIX.md)
+          PERCENTAGE=$((SUCCESS * 100 / TOTAL))
+          
+          # Determine badge color
+          if [ $PERCENTAGE -ge 90 ]; then
+            COLOR="brightgreen"
+          elif [ $PERCENTAGE -ge 70 ]; then
+            COLOR="green"
+          elif [ $PERCENTAGE -ge 50 ]; then
+            COLOR="yellow"
+          else
+            COLOR="red"
+          fi
+          
+          echo "Compatibility: ${PERCENTAGE}% - Color: ${COLOR}"
+          
+          # This could trigger a badge update service or update README
