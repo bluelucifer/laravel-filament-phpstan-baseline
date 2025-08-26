@@ -1,0 +1,125 @@
+# Laravel Excel PHPStan Baseline
+# Community-maintained exception patterns for Laravel Excel package
+# Last updated: 2025-08
+
+parameters:
+    ignoreErrors:
+        # ============================================
+        # Import/Export Data Types
+        # ============================================
+        
+        # Excel data is inherently mixed type
+        - '#Cannot cast mixed to (string|int|float|bool)#'
+        
+        # Array data from sheets
+        - '#Parameter \$array of .+ expects .+, array<int, mixed> given#'
+        - '#Method .+::array\(\) return type has no value type specified#'
+        
+        # Collection data
+        - '#Method .+::collection\(\) return type has no value type specified#'
+        
+        # ============================================
+        # Import Classes
+        # ============================================
+        
+        # ToModel interface
+        - '#Method .+::model\(\) has parameter \$row with no type specified#'
+        - '#Method .+::model\(\) return type has no value type specified#'
+        
+        # ToCollection interface
+        - '#Method .+::collection\(\) has parameter \$rows with no type specified#'
+        
+        # ToArray interface
+        - '#Method .+::array\(\) has parameter \$array with no type specified#'
+        
+        # WithHeadingRow
+        - '#Access to an undefined offset .+ on array#'
+        
+        # WithValidation
+        - '#Method .+::rules\(\) return type has no value type specified#'
+        
+        # WithBatchInserts
+        - '#Method .+::batchSize\(\) has no return type specified#'
+        
+        # WithChunkReading
+        - '#Method .+::chunkSize\(\) has no return type specified#'
+        
+        # ============================================
+        # Export Classes
+        # ============================================
+        
+        # FromCollection interface
+        - '#Method .+::collection\(\) return type has no value type specified#'
+        
+        # FromQuery interface
+        - '#Method .+::query\(\) return type has no value type specified#'
+        
+        # FromArray interface
+        - '#Method .+::array\(\) return type has no value type specified#'
+        
+        # WithMapping
+        - '#Method .+::map\(\) has parameter \$row with no type specified#'
+        - '#Method .+::map\(\) return type has no value type specified#'
+        
+        # WithHeadings
+        - '#Method .+::headings\(\) return type has no value type specified#'
+        
+        # WithStyles
+        - '#Method .+::styles\(\) has parameter \$sheet with no type specified#'
+        
+        # ============================================
+        # Sheet Operations
+        # ============================================
+        
+        # Sheet data access
+        - '#Cannot access offset .+ on mixed#'
+        
+        # Cell values
+        - '#Binary operation .+ between mixed and .+ results in an error#'
+        
+        # Date conversions
+        - '#Parameter \#1 \$value of .+::parse\(\) expects .+, mixed given#'
+        
+        # ============================================
+        # Events
+        # ============================================
+        
+        # Before/After import
+        - '#Method .+::before(Import|Export)\(\) has no return type specified#'
+        - '#Method .+::after(Import|Export)\(\) has no return type specified#'
+        
+        # Row events
+        - '#Method .+::on(Row|Error)\(\) has parameter \$.+ with no type specified#'
+        
+        # ============================================
+        # Concerns
+        # ============================================
+        
+        # ShouldQueue
+        - '#Method .+::failed\(\) has parameter \$exception with no type specified#'
+        
+        # WithEvents
+        - '#Method .+::registerEvents\(\) return type has no value type specified#'
+        
+        # WithProgressBar
+        - '#Method .+::getConsoleOutput\(\) has no return type specified#'
+        
+        # ============================================
+        # Facades
+        # ============================================
+        
+        # Excel facade methods
+        - '#Call to an undefined static method Maatwebsite\\Excel\\Facades\\Excel::.+#'
+        
+        # Download/Store operations
+        - '#Method Excel::(download|store|import|raw)\(\) return type has no value type specified#'
+        
+        # ============================================
+        # Helpers
+        # ============================================
+        
+        # Excel date helpers
+        - '#Function excel_date\(\) return type has no value type specified#'
+        
+        # Column index helpers
+        - '#Function column_index\(\) expects .+, mixed given#'

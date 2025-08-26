@@ -1,0 +1,177 @@
+# Livewire 3.x PHPStan Baseline
+# Community-maintained exception patterns for Livewire v3
+# Last updated: 2025-08
+
+parameters:
+    ignoreErrors:
+        # ============================================
+        # Component Properties
+        # ============================================
+        
+        # Public properties (auto-wired)
+        - '#Property .+::\$[a-zA-Z0-9_]+ has no type specified#'
+        - '#Property .+Component::\$.+ type has no value type specified#'
+        
+        # Protected/Private properties
+        - '#Property .+::\$(listeners|rules|messages|validationAttributes|queryString) has no type specified#'
+        
+        # ============================================
+        # Lifecycle Hooks
+        # ============================================
+        
+        # Mount method
+        - '#Method .+::mount\(\) has parameter \$.+ with no type specified#'
+        - '#Method .+::mount\(\) has no return type specified#'
+        
+        # Lifecycle methods
+        - '#Method .+::(boot|booted|hydrate|dehydrate|updating|updated)\(\) has no return type specified#'
+        
+        # Render method
+        - '#Method .+::render\(\) return type has no value type specified#'
+        
+        # ============================================
+        # Actions & Events
+        # ============================================
+        
+        # Action methods
+        - '#Method .+::[a-zA-Z]+Action\(\) has no return type specified#'
+        
+        # Event listeners
+        - '#Property .+::\$listeners type has no value type specified#'
+        - '#Method .+::getListeners\(\) return type has no value type specified#'
+        
+        # Emit/Dispatch
+        - '#Method .+::(emit|dispatch|dispatchTo|dispatchSelf)\(\) has no return type specified#'
+        
+        # ============================================
+        # Validation
+        # ============================================
+        
+        # Rules property
+        - '#Property .+::\$rules type has no value type specified#'
+        
+        # Validation methods
+        - '#Method .+::rules\(\) return type has no value type specified#'
+        - '#Method .+::messages\(\) return type has no value type specified#'
+        - '#Method .+::validationAttributes\(\) return type has no value type specified#'
+        
+        # Real-time validation
+        - '#Method .+::updated[A-Z][a-zA-Z]+\(\) has no return type specified#'
+        
+        # ============================================
+        # Computed Properties
+        # ============================================
+        
+        # Computed attribute
+        - '#Attribute class Livewire\\Attributes\\Computed constructor expects#'
+        - '#Method .+::computed[A-Z][a-zA-Z]+\(\) has no return type specified#'
+        
+        # Getter methods
+        - '#Method .+::get[A-Z][a-zA-Z]+Property\(\) return type has no value type specified#'
+        
+        # ============================================
+        # Forms & Data Binding
+        # ============================================
+        
+        # Wire:model binding
+        - '#Access to an undefined property .+::\$[a-zA-Z0-9_]+#'
+        
+        # Form state
+        - '#Property .+::\$form has no type specified#'
+        - '#Method .+::form\(\) return type has no value type specified#'
+        
+        # Fill method
+        - '#Method .+::fill\(\) has parameter \$values with no type specified#'
+        
+        # ============================================
+        # File Uploads
+        # ============================================
+        
+        # Temporary upload
+        - '#Property .+::\$[a-zA-Z]+Upload type has no value type specified#'
+        - '#Call to an undefined method Livewire\\TemporaryUploadedFile::.+#'
+        
+        # Upload validation
+        - '#Method .+::validateUpload\(\) has no return type specified#'
+        
+        # ============================================
+        # Pagination
+        # ============================================
+        
+        # WithPagination trait
+        - '#Property .+::\$paginators has no type specified#'
+        - '#Method .+::resetPage\(\) has no return type specified#'
+        
+        # Query string pagination
+        - '#Property .+::\$page has no type specified#'
+        
+        # ============================================
+        # JavaScript Integration
+        # ============================================
+        
+        # Alpine.js integration
+        - '#Access to an undefined property .+::\$[a-zA-Z0-9_]+#'
+        
+        # JavaScript evaluation
+        - '#Method .+::js\(\) has parameter \$expression with no type specified#'
+        
+        # ============================================
+        # Testing
+        # ============================================
+        
+        # Livewire test methods
+        - '#Call to an undefined method Livewire\\Testing\\TestableLivewire::.+#'
+        
+        # Assertions
+        - '#Method .+::assert[A-Z][a-zA-Z]+\(\) has no return type specified#'
+        
+        # ============================================
+        # URL & Query String
+        # ============================================
+        
+        # Query string property
+        - '#Property .+::\$queryString type has no value type specified#'
+        
+        # URL methods
+        - '#Method .+::queryString\(\) return type has no value type specified#'
+        - '#Method .+::getQueryString\(\) return type has no value type specified#'
+        
+        # ============================================
+        # Authorization
+        # ============================================
+        
+        # Authorize method
+        - '#Method .+::authorize\(\) has no return type specified#'
+        
+        # Can/Cannot checks
+        - '#Method .+::can[A-Z][a-zA-Z]+\(\) has no return type specified#'
+        
+        # ============================================
+        # Traits
+        # ============================================
+        
+        # WithFileUploads
+        - '#Method .+::cleanupOldUploads\(\) has no return type specified#'
+        
+        # WithPagination
+        - '#Method .+::getPage\(\) return type has no value type specified#'
+        
+        # WithSorting
+        - '#Property .+::\$(sortField|sortDirection) has no type specified#'
+        
+        # ============================================
+        # Miscellaneous
+        # ============================================
+        
+        # Component key
+        - '#Method .+::getKey\(\) return type has no value type specified#'
+        
+        # Component name
+        - '#Method .+::getName\(\) return type has no value type specified#'
+        
+        # Reset methods
+        - '#Method .+::reset\(\) has parameter \$.+ with no type specified#'
+        - '#Method .+::resetExcept\(\) has parameter \$.+ with no type specified#'
+        
+        # Redirect methods
+        - '#Method .+::redirect\(\) return type has no value type specified#'

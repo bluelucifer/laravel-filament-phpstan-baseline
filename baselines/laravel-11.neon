@@ -1,0 +1,169 @@
+# Laravel 11.x PHPStan Baseline
+# Community-maintained exception patterns for Laravel 11 framework
+# Last updated: 2025-08
+
+parameters:
+    ignoreErrors:
+        # ============================================
+        # Eloquent ORM Patterns
+        # ============================================
+        
+        # Magic methods on Eloquent Builder
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder#'
+        - '#Call to an undefined method Illuminate\\Database\\Query\\Builder#'
+        
+        # Dynamic where clauses (whereEmail, whereName, etc.)
+        - '#Call to an undefined method .+::where[A-Z][a-zA-Z]+\(\)#'
+        
+        # Eloquent scopes
+        - '#Call to an undefined method .+::scope[A-Z][a-zA-Z]+\(\)#'
+        
+        # Eloquent relationships generics (Laravel 11 requires full generic specification)
+        - '#Generic type Illuminate\\Database\\Eloquent\\Relations\\(HasMany|HasOne|BelongsTo|BelongsToMany|MorphMany|MorphOne|MorphTo|HasManyThrough|HasOneThrough).+ does not specify all template types#'
+        
+        # Model properties (fillable, casts, etc.)
+        - '#Access to an undefined property Illuminate\\Database\\Eloquent\\Model::\$[a-zA-Z0-9_]+#'
+        
+        # Collection methods
+        - '#Call to an undefined method Illuminate\\Support\\Collection::.+#'
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Collection::.+#'
+        
+        # ============================================
+        # HTTP & Request Patterns
+        # ============================================
+        
+        # Request properties (dynamic input names)
+        - '#Access to an undefined property Illuminate\\Http\\Request::\$[a-zA-Z0-9_]+#'
+        
+        # Request validation data
+        - '#Cannot access offset .+ on mixed#'
+        - '#Parameter \#1 \$key of method Illuminate\\Http\\Request::input\(\) expects .+, mixed given#'
+        
+        # Form request validated data
+        - '#Method .+::validated\(\) return type has no value type specified#'
+        
+        # ============================================
+        # Laravel Helpers & Facades
+        # ============================================
+        
+        # Helper functions returning mixed
+        - '#Function (config|trans|__|env|old|session|request|route|url|asset|mix|vite)\(\) return type has no value type#'
+        
+        # Facade methods
+        - '#Call to an undefined static method .+Facades\\.+::[a-zA-Z]+\(\)#'
+        
+        # Cache/Session mixed returns
+        - '#Method .+::(cache|session)\(\) return type has no value type#'
+        
+        # ============================================
+        # Service Container & Dependency Injection
+        # ============================================
+        
+        # App helper and container resolution
+        - '#Call to an undefined method .+Container::make\(\)#'
+        - '#Function app\(\) return type has no value type#'
+        
+        # Service provider boot/register
+        - '#Method .+ServiceProvider::(boot|register)\(\) has no return type specified#'
+        
+        # ============================================
+        # Routing & Middleware
+        # ============================================
+        
+        # Route parameters
+        - '#Parameter \$.+ of method .+ expects .+, mixed given#'
+        
+        # Middleware parameters
+        - '#Method .+::handle\(\) has parameter \$.+ with no type specified#'
+        
+        # ============================================
+        # Database & Migrations
+        # ============================================
+        
+        # Schema builder
+        - '#Call to an undefined method Illuminate\\Database\\Schema\\Blueprint::.+#'
+        
+        # Migration methods
+        - '#Method .+::(up|down)\(\) has no return type specified#'
+        
+        # Query builder aggregates
+        - '#Method .+::(count|sum|avg|min|max)\(\) return type has no value type#'
+        
+        # ============================================
+        # Validation
+        # ============================================
+        
+        # Validation rules array
+        - '#Property .+::\$rules type has no value type specified#'
+        
+        # Custom validation messages
+        - '#Method .+::messages\(\) return type has no value type specified#'
+        
+        # ============================================
+        # Events & Listeners
+        # ============================================
+        
+        # Event dispatcher
+        - '#Call to an undefined method .+Dispatcher::.+#'
+        
+        # Listener handle method
+        - '#Method .+::handle\(\) has no return type specified#'
+        
+        # ============================================
+        # Jobs & Queues
+        # ============================================
+        
+        # Job handle method
+        - '#Method .+::handle\(\) has no return type specified#'
+        
+        # Queue methods
+        - '#Call to an undefined method .+Queue::.+#'
+        
+        # ============================================
+        # Caching
+        # ============================================
+        
+        # Cache returns mixed
+        - '#Method .+Cache::get\(\) return type has no value type#'
+        - '#Method .+Cache::remember\(\) return type has no value type#'
+        
+        # ============================================
+        # File Storage
+        # ============================================
+        
+        # Storage facade
+        - '#Call to an undefined static method Illuminate\\Support\\Facades\\Storage::.+#'
+        
+        # File uploads
+        - '#Call to an undefined method Illuminate\\Http\\UploadedFile::.+#'
+        
+        # ============================================
+        # Authentication & Authorization
+        # ============================================
+        
+        # Auth user
+        - '#Call to an undefined method .+Authenticatable::.+#'
+        - '#Access to an undefined property .+Authenticatable::\$.+#'
+        
+        # Gates and policies
+        - '#Method .+::authorize\(\) has no return type specified#'
+        
+        # ============================================
+        # Miscellaneous
+        # ============================================
+        
+        # JSON columns (casts to array)
+        - '#Property .+::\$(meta|data|options|settings|preferences|configuration|attributes|properties|extra|payload|body|content|details) .+ mixed#'
+        
+        # Carbon/DateTime
+        - '#Call to an undefined method Carbon\\Carbon::.+#'
+        
+        # Collection higher-order proxies
+        - '#Access to an undefined property Illuminate\\Support\\HigherOrderCollectionProxy::\$.+#'
+        
+        # Stringable
+        - '#Call to an undefined method Illuminate\\Support\\Stringable::.+#'
+        
+        # Testing
+        - '#Call to an undefined method .+TestCase::.+#'
+        - '#Property .+Test::\$.+ has no type specified#'

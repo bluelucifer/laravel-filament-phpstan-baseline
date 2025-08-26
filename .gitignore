@@ -1,0 +1,23 @@
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+/vendor/
+/test-project/
+composer.lock
+phpstan.neon.dist
+
+# Build
+/dist/
+/build/
+
+# Logs
+*.log
+
+# OS
+Thumbs.db

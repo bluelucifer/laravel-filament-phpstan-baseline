@@ -1,0 +1,214 @@
+# Filament 3.x PHPStan Baseline
+# Community-maintained exception patterns for Filament Admin Panel v3
+# Last updated: 2025-08
+
+parameters:
+    ignoreErrors:
+        # ============================================
+        # Filament Forms
+        # ============================================
+        
+        # Form components method chaining
+        - '#Call to an undefined method Filament\\Forms\\Components\\[A-Za-z]+::[a-z][a-zA-Z]+\(\)#'
+        
+        # Form builder dynamic methods
+        - '#Call to an undefined method Filament\\Forms\\Builder::.+#'
+        
+        # Form state and data
+        - '#Variable \$data might not be defined#'
+        - '#Cannot access offset .+ on array\|null#'
+        - '#Parameter \$state of .+ expects .+, mixed given#'
+        
+        # Form component callbacks
+        - '#Parameter \$get of .+ expects .+, mixed given#'
+        - '#Parameter \$set of .+ expects .+, mixed given#'
+        - '#Parameter \$state of .+ expects .+, mixed given#'
+        
+        # Custom form components
+        - '#Method .+::getFormSchema\(\) return type has no value type#'
+        
+        # ============================================
+        # Filament Tables
+        # ============================================
+        
+        # Table columns method chaining
+        - '#Call to an undefined method Filament\\Tables\\Columns\\[A-Za-z]+::[a-z][a-zA-Z]+\(\)#'
+        
+        # Table builder
+        - '#Call to an undefined method Filament\\Tables\\Builder::.+#'
+        
+        # Table filters
+        - '#Call to an undefined method Filament\\Tables\\Filters\\[A-Za-z]+::.+#'
+        
+        # Table actions
+        - '#Call to an undefined method Filament\\Tables\\Actions\\[A-Za-z]+::.+#'
+        
+        # Bulk actions
+        - '#Parameter \$records of .+ expects .+, mixed given#'
+        
+        # ============================================
+        # Filament Resources
+        # ============================================
+        
+        # Resource $record variable
+        - '#Variable \$record might not be defined#'
+        - '#Cannot access property .+ on mixed#'
+        - '#Part \$record->.+ \(mixed\) of encapsed string cannot be cast to string#'
+        
+        # Resource model
+        - '#Call to an undefined static method .+Resource::getModel\(\)#'
+        - '#Cannot call static method query\(\) on mixed#'
+        
+        # Resource pages
+        - '#Method .+::(getTitle|getHeading|getSubheading)\(\) has no return type specified#'
+        
+        # Resource relations
+        - '#Method .+Resource::getRelations\(\) return type has no value type#'
+        
+        # Resource form/table
+        - '#Method .+Resource::(form|table)\(\) has parameter \$.+ with no type specified#'
+        
+        # ============================================
+        # Filament Pages
+        # ============================================
+        
+        # Page properties
+        - '#Property .+Page::\$(data|record) has no type specified#'
+        
+        # Page lifecycle hooks
+        - '#Method .+Page::(mount|boot|afterSave|beforeSave)\(\) has no return type specified#'
+        
+        # Custom pages
+        - '#Method .+::getView\(\) return type has no value type#'
+        
+        # ============================================
+        # Filament Actions
+        # ============================================
+        
+        # Action callbacks
+        - '#Parameter \$data of .+ expects .+, array given#'
+        - '#Parameter \$record of .+ expects .+, mixed given#'
+        
+        # Action authorization
+        - '#Method .+::authorize\(\) has no return type specified#'
+        
+        # Modal actions
+        - '#Call to an undefined method .+Action::modal[A-Za-z]+\(\)#'
+        
+        # ============================================
+        # Filament Notifications
+        # ============================================
+        
+        # Notification methods
+        - '#Call to an undefined method Filament\\Notifications\\Notification::.+#'
+        
+        # Notification actions
+        - '#Call to an undefined method Filament\\Notifications\\Actions\\Action::.+#'
+        
+        # ============================================
+        # Filament Widgets
+        # ============================================
+        
+        # Widget properties
+        - '#Property .+Widget::\$.+ has no type specified#'
+        
+        # Chart widgets
+        - '#Method .+ChartWidget::getData\(\) return type has no value type#'
+        
+        # Stats widgets
+        - '#Method .+StatsOverviewWidget::getStats\(\) return type has no value type#'
+        
+        # Table widgets
+        - '#Method .+TableWidget::table\(\) has parameter \$table with no type specified#'
+        
+        # ============================================
+        # Filament Navigation
+        # ============================================
+        
+        # Navigation items
+        - '#Method .+::getNavigationItems\(\) return type has no value type#'
+        
+        # Navigation groups
+        - '#Method .+::getNavigationGroup\(\) has no return type specified#'
+        
+        # Breadcrumbs
+        - '#Method .+::getBreadcrumbs\(\) return type has no value type#'
+        
+        # ============================================
+        # Filament Infolists
+        # ============================================
+        
+        # Infolist components
+        - '#Call to an undefined method Filament\\Infolists\\Components\\[A-Za-z]+::.+#'
+        
+        # Infolist builder
+        - '#Call to an undefined method Filament\\Infolists\\Builder::.+#'
+        
+        # ============================================
+        # Filament Relationships
+        # ============================================
+        
+        # Relation managers
+        - '#Method .+RelationManager::table\(\) has parameter \$table with no type specified#'
+        - '#Property .+RelationManager::\$relationship has no type specified#'
+        
+        # Relationship callbacks
+        - '#Parameter \$query of .+ expects .+, mixed given#'
+        
+        # ============================================
+        # Filament Authorization
+        # ============================================
+        
+        # Policy methods
+        - '#Method .+Policy::[a-zA-Z]+\(\) has no return type specified#'
+        
+        # Can methods
+        - '#Call to an undefined method .+::can[A-Z][a-zA-Z]+\(\)#'
+        
+        # ============================================
+        # Filament Imports/Exports
+        # ============================================
+        
+        # Import/Export columns
+        - '#Method .+::getColumns\(\) return type has no value type#'
+        
+        # CSV data
+        - '#Parameter \$row of .+ expects .+, array given#'
+        
+        # ============================================
+        # Livewire Integration
+        # ============================================
+        
+        # Livewire properties
+        - '#Property .+::\$(listeners|rules|messages|validationAttributes) has no type specified#'
+        
+        # Livewire lifecycle
+        - '#Method .+::(mount|hydrate|dehydrate|updated|updating)\(\) has no return type specified#'
+        
+        # Computed properties
+        - '#Method .+::computed.+ has no return type#'
+        
+        # ============================================
+        # Miscellaneous Filament
+        # ============================================
+        
+        # Panel configuration
+        - '#Call to an undefined method Filament\\Panel::.+#'
+        
+        # Plugin registration
+        - '#Method .+Plugin::(register|boot)\(\) has no return type specified#'
+        
+        # Tenant management
+        - '#Access to an undefined property .+Tenant::\$.+#'
+        
+        # Global search
+        - '#Method .+::getGlobalSearchResults\(\) return type has no value type#'
+        
+        # File upload
+        - '#Call to an undefined method Filament\\Forms\\Components\\FileUpload::.+#'
+        
+        # Repeater fields
+        - '#Call to an undefined method Filament\\Forms\\Components\\Repeater::.+#'
+        
+        # Builder fields
+        - '#Call to an undefined method Filament\\Forms\\Components\\Builder::.+#'

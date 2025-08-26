@@ -1,0 +1,214 @@
+# Laravel & Filament PHPStan Baseline
+
+🎯 **Community-maintained PHPStan exception patterns for Laravel & Filament projects**
+
+This repository provides curated PHPStan baseline configurations and ignore patterns specifically designed for Laravel and Filament applications, helping you focus on real code issues rather than framework-specific false positives.
+
+## 📋 Table of Contents
+
+- [Why This Exists](#why-this-exists)
+- [Quick Start](#quick-start)
+- [Available Baselines](#available-baselines)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [Patterns Documentation](#patterns-documentation)
+
+## 🤔 Why This Exists
+
+When using PHPStan with Laravel and Filament, you'll encounter many false positives due to:
+- Magic methods and properties
+- Dynamic query builders
+- Livewire components
+- Filament resources and fields
+- Laravel's service container
+- Package-specific patterns
+
+Instead of each project maintaining its own ignore patterns, this repository provides a community-maintained baseline.
+
+## 🚀 Quick Start
+
+### Option 1: Include via URL (Recommended)
+
+```yaml
+# phpstan.neon
+includes:
+    - vendor/larastan/larastan/extension.neon
+    # Include our baseline directly from GitHub
+    - https://raw.githubusercontent.com/bluelucifer/laravel-filament-phpstan-baseline/main/baselines/laravel-11.neon
+    - https://raw.githubusercontent.com/bluelucifer/laravel-filament-phpstan-baseline/main/baselines/filament-3.neon
+```
+
+### Option 2: Download and Include Locally
+
+```bash
+# Download the baselines you need
+wget https://raw.githubusercontent.com/bluelucifer/laravel-filament-phpstan-baseline/main/baselines/laravel-11.neon -O phpstan-laravel-baseline.neon
+wget https://raw.githubusercontent.com/bluelucifer/laravel-filament-phpstan-baseline/main/baselines/filament-3.neon -O phpstan-filament-baseline.neon
+
+# Include in your phpstan.neon
+```
+
+```yaml
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - phpstan-laravel-baseline.neon
+    - phpstan-filament-baseline.neon
+```
+
+### Option 3: Composer Package (Future)
+
+```bash
+composer require --dev bluelucifer/laravel-filament-phpstan-baseline
+```
+
+## 📦 Available Baselines
+
+### Core Baselines
+
+- **`laravel-11.neon`** - Laravel 11.x framework patterns
+- **`laravel-10.neon`** - Laravel 10.x framework patterns  
+- **`filament-3.neon`** - Filament v3.x admin panel
+- **`filament-2.neon`** - Filament v2.x admin panel
+- **`livewire-3.neon`** - Livewire v3.x components
+
+### Package-Specific Baselines
+
+- **`laravel-excel.neon`** - Laravel Excel import/export
+- **`laravel-nova.neon`** - Laravel Nova admin panel
+- **`spatie-packages.neon`** - Common Spatie packages
+- **`laravel-sanctum.neon`** - Laravel Sanctum API auth
+- **`laravel-jetstream.neon`** - Laravel Jetstream
+
+### Level-Specific Baselines
+
+- **`strict-level-0-2.neon`** - Transition from level 0 to 2
+- **`strict-level-3-5.neon`** - Transition from level 3 to 5
+- **`strict-level-6-8.neon`** - Transition from level 6 to 8
+
+## 🔧 Usage
+
+### Basic Configuration
+
+```yaml
+# phpstan.neon
+includes:
+    - vendor/larastan/larastan/extension.neon
+    # Add the baselines you need
+    - https://raw.githubusercontent.com/bluelucifer/laravel-filament-phpstan-baseline/main/baselines/laravel-11.neon
+    - https://raw.githubusercontent.com/bluelucifer/laravel-filament-phpstan-baseline/main/baselines/filament-3.neon
+
+parameters:
+    paths:
+        - app
+        - config
+        - database
+        - routes
+    
+    level: 5
+    
+    # Your project-specific ignores (if any)
+    ignoreErrors:
+        - '#Your custom pattern#'
+```
+
+### Progressive Strictness
+
+Start with permissive baselines and gradually increase strictness:
+
+```yaml
+# Level 0-2 (Beginner)
+includes:
+    - .../baselines/strict-level-0-2.neon
+
+# Level 3-5 (Intermediate)  
+includes:
+    - .../baselines/strict-level-3-5.neon
+
+# Level 6-8 (Advanced)
+includes:
+    - .../baselines/strict-level-6-8.neon
+```
+
+## 🤝 Contributing
+
+We welcome contributions! Please help us improve these baselines:
+
+1. **Report False Positives**: Open an issue with your PHPStan error
+2. **Submit Patterns**: PR with new ignore patterns
+3. **Test & Validate**: Test baselines with your projects
+4. **Documentation**: Improve pattern explanations
+
+### Contribution Guidelines
+
+- Include comments explaining why each pattern is needed
+- Group patterns by feature/package
+- Test patterns with real projects
+- Keep patterns as specific as possible
+
+## 📖 Patterns Documentation
+
+### Laravel Patterns
+
+```yaml
+# Eloquent Magic Methods
+- '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder#'
+
+# Query Builder Dynamic Where
+- '#Call to an undefined method .+::where[A-Z][a-zA-Z]+\(\)#'
+
+# Request Properties
+- '#Access to an undefined property Illuminate\\Http\\Request::\$[a-zA-Z0-9_]+#'
+```
+
+### Filament Patterns
+
+```yaml
+# Form Components Chaining
+- '#Call to an undefined method Filament\\Forms\\Components\\[A-Za-z]+::[a-z][a-zA-Z]+\(\)#'
+
+# Resource $record Variable
+- '#Variable \$record might not be defined#'
+```
+
+### Livewire Patterns
+
+```yaml
+# Public Properties
+- '#Property .+::\$[a-zA-Z0-9_]+ has no type specified#'
+
+# Computed Properties
+- '#Method .+::computed.+ has no return type#'
+```
+
+## 🏷️ Version Compatibility
+
+| Laravel | Filament | Livewire | Baseline File |
+|---------|----------|----------|---------------|
+| 11.x    | 3.x      | 3.x      | Use latest    |
+| 10.x    | 3.x      | 3.x      | Use laravel-10 + filament-3 |
+| 10.x    | 2.x      | 2.x      | Use laravel-10 + filament-2 |
+| 9.x     | 2.x      | 2.x      | Use legacy branch |
+
+## 📊 Statistics
+
+- **Patterns Maintained**: 150+
+- **Projects Using**: Growing!
+- **Contributors**: Welcome!
+- **Last Updated**: 2025-08
+
+## 📄 License
+
+MIT License - Use freely in your projects!
+
+## 🔗 Links
+
+- [PHPStan Documentation](https://phpstan.org/)
+- [Larastan Package](https://github.com/nunomaduro/larastan)
+- [Laravel Documentation](https://laravel.com/docs)
+- [Filament Documentation](https://filamentphp.com/docs)
+
+---
+
+**Made with ❤️ by the Laravel & Filament community**
+
+⭐ Star this repository if you find it helpful!
