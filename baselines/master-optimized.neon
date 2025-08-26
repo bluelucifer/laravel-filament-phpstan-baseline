@@ -1,0 +1,103 @@
+# Master Optimized PHPStan Baseline
+# Combines all framework patterns with maximum optimization
+# Performance-focused with pattern consolidation and deduplication
+# Last updated: 2025-08
+
+parameters:
+    ignoreErrors:
+        # ============================================
+        # Universal Method Patterns
+        # ============================================
+        
+        # Any undefined method call (covers Laravel, Filament, Livewire)
+        - '#^Call to an undefined method [\w\\]+::(where|scope|can|assert|modal|computed|get|set)[A-Z]?\w*\(\)$#'
+        
+        # Static method calls
+        - '#^Call to an undefined static method [\w\\]+::\w+\(\)$#'
+        
+        # Builder pattern methods (Laravel, Filament)
+        - '#^Call to an undefined method [\w\\]+Builder::\w+$#'
+        
+        # ============================================
+        # Universal Property Patterns
+        # ============================================
+        
+        # Any property access issues
+        - '#^(Access to an undefined property|Cannot access property) [\w\\]+::\$\w+( on (mixed|[\w\\]+\|null))?$#'
+        
+        # Properties without type specification
+        - '#^Property [\w\\]+::\$\w+ (has no type specified|type has no value type specified|type has no value type specified in iterable type \w+)$#'
+        
+        # ============================================
+        # Universal Return Type Patterns
+        # ============================================
+        
+        # Methods without return types - common names
+        - '#^Method [\w\\]+::(mount|boot|register|handle|authorize|up|down|hydrate|dehydrate|updated?|render|dispatch|emit|reset\w*|validate\w*)\(\) has no return type specified$#'
+        
+        # Methods with missing value types
+        - '#^Method [\w\\]+::\w+\(\) return type has no value type( specified)?( in iterable type \w+)?$#'
+        
+        # ============================================
+        # Universal Parameter Patterns
+        # ============================================
+        
+        # Parameters with type issues
+        - '#^(Method [\w\\]+::\w+\(\) has parameter|Parameter #?\d* )\$\w+ (with no type specified|expects [\w\\|]+, (mixed|array|[\w\\]+\|null) given)$#'
+        
+        # ============================================
+        # Array & Offset Access
+        # ============================================
+        
+        # Universal offset access
+        - '#^Cannot access offset .+ on (mixed|array\|null|[\w\\]+\|null)$#'
+        
+        # ============================================
+        # Variable Patterns
+        # ============================================
+        
+        # Common undefined variables
+        - '#^(Variable|Undefined variable:) \$\w+( might not be defined)?$#'
+        
+        # ============================================
+        # Framework-Specific Optimized
+        # ============================================
+        
+        ## Laravel Specific
+        - '#^Generic type Illuminate\\Database\\Eloquent\\Relations\\[\w\\]+.+ does not specify all template types$#'
+        - '#^Function (config|trans|__|env|old|session|request|route|url|asset|mix|vite|app)\(\) return type has no value type$#'
+        
+        ## Filament Specific
+        - '#^Call to an undefined method Filament\\[\w\\]+\\(Components?|Columns?|Filters?|Actions?|Builder)\\[\w\\]+::\w+\(\)$#'
+        - '#^Part \$\w+->.+ \(mixed\) of encapsed string cannot be cast to string$#'
+        
+        ## Livewire Specific
+        - '#^(Attribute class Livewire\\Attributes\\\w+ constructor expects|Call to an undefined method Livewire\\[\w\\]+::\w+)#'
+        
+        # ============================================
+        # Testing Patterns
+        # ============================================
+        
+        - '#^(Call to an undefined method|Property) [\w\\]+(Test|TestCase)::(\\$)?\w+( has no type specified)?$#'
+        
+        # ============================================
+        # Miscellaneous Optimized
+        # ============================================
+        
+        # JSON/Array columns
+        - '#^Property [\w\\]+::\$(meta|data|options|settings|preferences|configuration|attributes|properties|extra|payload|body|content|details|json\w*) .+ mixed$#'
+        
+        # Date/Time libraries
+        - '#^Call to an undefined method (Carbon\\Carbon|[\w\\]+DateTime)::\w+$#'
+        
+        # Dead code detection
+        - '#^(Unreachable statement|Dead catch|Result of .+ is always (true|false)|If condition is always (true|false)|Negated boolean expression is always (true|false))#'
+        
+        # Mixed type operations
+        - '#^(Argument of an invalid type mixed supplied for foreach|Result of .+ \(void\) is used|Trying to invoke .+ but it might not be a callable)$#'
+        
+        # Class existence
+        - '#^(Class|Instantiated class) [\w\\]+ not found$#'
+        
+        # Function not found
+        - '#^Function [\w_]+ not found$#'

@@ -1,0 +1,70 @@
+# Livewire 3.x PHPStan Baseline (Optimized)
+# Performance-optimized patterns with consolidation
+# Last updated: 2025-08
+
+parameters:
+    ignoreErrors:
+        # ============================================
+        # Properties - Consolidated
+        # ============================================
+        
+        # All Livewire properties (public, protected, special)
+        - '#^Property .+::\$(listeners|rules|messages|validationAttributes|queryString|paginators|sortField|sortDirection|page|form|\w+) (has no type specified|type has no value type specified)$#'
+        
+        # Property access issues
+        - '#^Access to an undefined property .+::\$\w+$#'
+        
+        # ============================================
+        # Lifecycle & Methods - Consolidated
+        # ============================================
+        
+        # All lifecycle methods without return types
+        - '#^Method .+::(mount|boot|booted|hydrate|dehydrate|updating|updated|updated[A-Z]\w*|render|authorize|reset|resetExcept|resetPage|validateUpload|cleanupOldUploads)\(\) (has no return type specified|has parameter \$\w+ with no type specified)$#'
+        
+        # Methods with missing value types
+        - '#^Method .+::(render|rules|messages|validationAttributes|getListeners|queryString|getQueryString|getPage|getKey|getName|redirect|form|fill) return type has no value type specified$#'
+        
+        # Action methods
+        - '#^Method .+::\w+Action\(\) has no return type specified$#'
+        
+        # ============================================
+        # Computed Properties - Consolidated
+        # ============================================
+        
+        # Computed properties and getters
+        - '#^(Attribute class Livewire\\Attributes\\Computed constructor expects|Method .+::(computed\w+|get\w+Property)\(\) (has no return type specified|return type has no value type specified))$#'
+        
+        # ============================================
+        # Events & Dispatching - Consolidated
+        # ============================================
+        
+        # Event methods
+        - '#^Method .+::(emit|dispatch|dispatchTo|dispatchSelf)\(\) has no return type specified$#'
+        
+        # ============================================
+        # File Uploads - Consolidated
+        # ============================================
+        
+        # Temporary upload handling
+        - '#^(Property .+::\$\w+Upload type has no value type specified|Call to an undefined method Livewire\\TemporaryUploadedFile::\w+)$#'
+        
+        # ============================================
+        # Testing - Consolidated
+        # ============================================
+        
+        # Test methods and assertions
+        - '#^(Call to an undefined method Livewire\\Testing\\TestableLivewire::\w+|Method .+::assert\w+\(\) has no return type specified)$#'
+        
+        # ============================================
+        # Authorization - Consolidated
+        # ============================================
+        
+        # Can/Cannot checks
+        - '#^Method .+::can[A-Z]\w*\(\) has no return type specified$#'
+        
+        # ============================================
+        # JavaScript Integration - Consolidated
+        # ============================================
+        
+        # JS evaluation
+        - '#^Method .+::js\(\) has parameter \$expression with no type specified$#'
