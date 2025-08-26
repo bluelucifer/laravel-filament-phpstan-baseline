@@ -1,0 +1,159 @@
+# PHPStan Strict Level 0-2 Baseline
+# For transitioning from PHPStan level 0 to level 2
+# This baseline helps suppress common errors when moving to stricter analysis levels
+
+parameters:
+    ignoreErrors:
+        # Level 0 → 1: Basic type checks
+        -
+            message: '#^Variable \$[a-zA-Z_]+ might not be defined#'
+            paths:
+                - app/**/*.php
+                - tests/**/*.php
+        
+        -
+            message: '#^Undefined variable: \$[a-zA-Z_]+#'
+            paths:
+                - app/**/*.php
+                - resources/views/**/*.blade.php
+        
+        -
+            message: '#^Function [a-zA-Z_]+ not found#'
+            paths:
+                - app/**/*.php
+                - bootstrap/*.php
+        
+        # Level 1 → 2: Unknown method and property checks
+        -
+            message: '#^Call to an undefined method [a-zA-Z\\]+::[a-zA-Z_]+\(\)#'
+            paths:
+                - app/**/*.php
+                - tests/**/*.php
+        
+        -
+            message: '#^Access to an undefined property [a-zA-Z\\]+::\$[a-zA-Z_]+#'
+            paths:
+                - app/**/*.php
+                - tests/**/*.php
+        
+        -
+            message: '#^Call to method [a-zA-Z_]+\(\) on an unknown class#'
+            paths:
+                - app/**/*.php
+        
+        # Common Laravel patterns at lower levels
+        -
+            message: '#^Method .+ has no return type specified#'
+            paths:
+                - app/**/*.php
+                - tests/**/*.php
+        
+        -
+            message: '#^Method .+ has parameter \$[a-zA-Z_]+ with no type specified#'
+            paths:
+                - app/**/*.php
+                - tests/**/*.php
+        
+        -
+            message: '#^Property .+::\$[a-zA-Z_]+ has no type specified#'
+            paths:
+                - app/**/*.php
+        
+        # Mixed type issues common at lower levels
+        -
+            message: '#^Parameter .+ of method .+ expects .+, mixed given#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Method .+ should return .+ but returns mixed#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Property .+::\$[a-zA-Z_]+ \(mixed\) does not accept .+#'
+            paths:
+                - app/**/*.php
+        
+        # Array access and iteration at lower levels
+        -
+            message: '#^Cannot access offset .+ on mixed#'
+            paths:
+                - app/**/*.php
+                - config/*.php
+        
+        -
+            message: '#^Argument of an invalid type mixed supplied for foreach#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Cannot access property .+ on mixed#'
+            paths:
+                - app/**/*.php
+        
+        # Null handling at lower levels
+        -
+            message: '#^Trying to invoke .+ but it might not be a callable#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Result of .+ \(void\) is used#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Negated boolean expression is always (true|false)#'
+            paths:
+                - app/**/*.php
+        
+        # Common framework patterns at lower levels
+        -
+            message: '#^Anonymous function has an unused use \$[a-zA-Z_]+#'
+            paths:
+                - app/**/*.php
+                - routes/*.php
+        
+        -
+            message: '#^Unreachable statement - code above always terminates#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Dead catch - [a-zA-Z\\]+ is never thrown in the try block#'
+            paths:
+                - app/**/*.php
+        
+        # Class existence checks at lower levels
+        -
+            message: '#^Class [a-zA-Z\\]+ not found#'
+            paths:
+                - app/**/*.php
+                - config/*.php
+        
+        -
+            message: '#^Instantiated class [a-zA-Z\\]+ not found#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Call to static method .+ on an unknown class#'
+            paths:
+                - app/**/*.php
+        
+        # Basic return type issues
+        -
+            message: '#^Method .+ should return .+ but empty return statement found#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Method .+ with return type void returns .+#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Method .+ should return .+ but return statement is missing#'
+            paths:
+                - app/**/*.php

@@ -1,29 +1,183 @@
-# PHPStan Level 6-8 Combined Baseline
-# For transitioning from intermediate to advanced strictness
-# Last updated: 2025-08
-
-includes:
-    # All previous patterns
-    - level-3-5.neon
+# PHPStan Strict Level 6-8 Baseline
+# For transitioning from PHPStan level 6 to level 8
+# This baseline helps suppress common errors when adopting the strictest type checking
 
 parameters:
     ignoreErrors:
-        # ============================================
-        # Level 6-8 Specific Suppressions
-        # ============================================
+        # Level 6 → 7: Possibly undefined variables
+        -
+            message: '#^Variable \$[a-zA-Z_]+ in empty\(\) always exists and is always falsy#'
+            paths:
+                - app/**/*.php
         
-        # Allow iterable without value types in migrations
-        - '#Migration::.+ type has no value type specified in iterable#'
+        -
+            message: '#^Variable \$[a-zA-Z_]+ might not be defined#'
+            paths:
+                - app/**/*.php
+                - resources/views/**/*.blade.php
         
-        # Allow mixed in config files
-        - '#return type has no value type specified in iterable type array#'
+        -
+            message: '#^Variable \$[a-zA-Z_]+ in isset\(\) is never defined#'
+            paths:
+                - app/**/*.php
         
-        # Allow union types in route parameters
-        - '#Route model binding .+ expects .+\|null but mixed given#'
+        # Level 7 → 8: Union type strict checks
+        -
+            message: '#^Only booleans are allowed in .+, .+\|null given#'
+            paths:
+                - app/**/*.php
         
-        # Allow certain always true/false conditions in defensive programming
-        - '#If condition is always (true|false)#'
-        - '#Ternary operator condition is always (true|false)#'
+        -
+            message: '#^Only booleans are allowed in .+, mixed given#'
+            paths:
+                - app/**/*.php
         
-        # Allow cognitive complexity in complex business logic
-        - '#Cognitive complexity of method .+ is \d+, keep it under 10#'
+        -
+            message: '#^Only booleans are allowed in .+, .+ given#'
+            paths:
+                - app/**/*.php
+        
+        # Partial array shapes
+        -
+            message: '#^Offset .+ does not exist on array{.+}#'
+            paths:
+                - app/**/*.php
+                - config/*.php
+        
+        -
+            message: '#^Cannot access offset .+ on array{.+}\|null#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Array has \d+ duplicate keys with value .+#'
+            paths:
+                - config/*.php
+        
+        # Strict comparison requirements
+        -
+            message: '#^Comparison operation .+ between .+ and .+ results in an error#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Cannot cast mixed to string#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Cannot cast mixed to int#'
+            paths:
+                - app/**/*.php
+        
+        # Nullable type strict handling
+        -
+            message: '#^Parameter #\d+ \$[a-zA-Z_]+ of function .+ expects .+, .+\|false given#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Method .+ should return .+ but returns .+\|false#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Ternary operator condition is always true#'
+            paths:
+                - app/**/*.php
+        
+        # Type-safe comparisons
+        -
+            message: '#^Binary operation .+ between .+ and .+ results in an error#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Cannot perform arithmetic operation .+ on .+#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Result of .+ is always .+#'
+            paths:
+                - app/**/*.php
+        
+        # Iterator and array access
+        -
+            message: '#^Argument of an invalid type .+\|null supplied for foreach, only iterables are supported#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Cannot use array destructuring on .+\|null#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Cannot unpack array with string keys#'
+            paths:
+                - app/**/*.php
+        
+        # Void and never types
+        -
+            message: '#^Result of method .+ \(void\) is used#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Expression on left side of \?\? is not nullable#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Unreachable statement - code above always terminates#'
+            paths:
+                - app/**/*.php
+        
+        # Strict callable checks
+        -
+            message: '#^Parameter #\d+ \$[a-zA-Z_]+ of callable .+ expects .+, .+ given#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Return type of call to method .+ contains unresolvable type#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Callable .+ invoked with \d+ parameters, \d+ required#'
+            paths:
+                - app/**/*.php
+        
+        # Template and generic constraints
+        -
+            message: '#^Generic type .+ in PHPDoc tag .+ does not specify all template types#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^PHPDoc tag .+ has invalid value .+: Template type .+ is not referenced in a parameter#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Call to function array_key_exists\(\) with .+ and .+ will always evaluate to false#'
+            paths:
+                - app/**/*.php
+        
+        # Benevolent union types
+        -
+            message: '#^Result of function .+ \(false\) is used#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Loose comparison using == between .+ and .+ will always evaluate to .+#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Call to function in_array\(\) with arguments .+, .+ and true will always evaluate to false#'
+            paths:
+                - app/**/*.php
