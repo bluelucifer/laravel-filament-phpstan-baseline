@@ -3,150 +3,107 @@ name: Release
 on:
   push:
     tags:
-      - 'v*.*.*'
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version to release (e.g., v1.0.0)'
-        required: true
+      - 'v*'
 
 permissions:
   contents: write
-  pull-requests: write
+  discussions: write
 
 jobs:
-  create-release:
-    name: Create Release
+  release:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
-      - name: Get version
-        id: version
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          extensions: dom, curl, libxml, mbstring, zip
+          tools: composer:v2
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Run tests
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            VERSION="${{ github.event.inputs.version }}"
+          if [ -f "vendor/bin/phpunit" ]; then
+            ./vendor/bin/phpunit
           else
-            VERSION="${GITHUB_REF#refs/tags/}"
+            echo "PHPUnit not available, skipping tests"
           fi
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-      
-      - name: Generate changelog
+
+      - name: Validate baselines
+        run: |
+          if [ -f "scripts/validate-all.sh" ]; then
+            ./scripts/validate-all.sh || echo "Some validations failed, but continuing with release"
+          else
+            echo "Validation script not available, skipping validation"
+          fi
+
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Extract changelog
         id: changelog
         run: |
-          # Get the previous tag
-          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
-          
-          if [ -z "$PREVIOUS_TAG" ]; then
-            echo "No previous tag found, including all commits"
-            COMMITS=$(git log --pretty=format:"- %s (%h)" --reverse)
+          VERSION="${{ steps.get_version.outputs.VERSION }}"
+          if [ -f "CHANGELOG.md" ]; then
+            # Extract release notes between version headers
+            CHANGELOG_CONTENT=$(awk "/^## \[$VERSION\]/,/^## \[/{if(/^## \[/ && !/^## \[$VERSION\]/) exit; print}" CHANGELOG.md | head -n -1 | tail -n +3)
+            
+            # Save to file for GitHub release
+            echo "$CHANGELOG_CONTENT" > release_notes.md
+            
+            # Set output (properly escaped)
+            {
+              echo 'CHANGELOG<<EOF'
+              echo "$CHANGELOG_CONTENT"
+              echo 'EOF'
+            } >> $GITHUB_OUTPUT
           else
-            echo "Previous tag: $PREVIOUS_TAG"
-            COMMITS=$(git log --pretty=format:"- %s (%h)" "$PREVIOUS_TAG"..HEAD --reverse)
+            echo "CHANGELOG=No changelog available." >> $GITHUB_OUTPUT
+            echo "No changelog available." > release_notes.md
           fi
-          
-          # Create changelog
-          cat > CHANGELOG_TEMP.md <<EOF
-          ## What's Changed in ${{ steps.version.outputs.version }}
-          
-          ### Commits
-          $COMMITS
-          
-          ### Contributors
-          EOF
-          
-          # Add contributors
-          if [ -z "$PREVIOUS_TAG" ]; then
-            git log --format='- @%an' | sort -u >> CHANGELOG_TEMP.md
-          else
-            git log "$PREVIOUS_TAG"..HEAD --format='- @%an' | sort -u >> CHANGELOG_TEMP.md
-          fi
-          
-          # Add baseline statistics
-          cat >> CHANGELOG_TEMP.md <<EOF
-          
-          ### Baseline Statistics
-          EOF
-          
-          for file in baselines/*.neon; do
-            if [ -f "$file" ]; then
-              count=$(grep -c "message:" "$file" || echo "0")
-              echo "- $(basename $file): $count patterns" >> CHANGELOG_TEMP.md
-            fi
-          done
-          
-          echo "changelog<<EOF" >> $GITHUB_OUTPUT
-          cat CHANGELOG_TEMP.md >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-      
+
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.version.outputs.version }}
-          name: Release ${{ steps.version.outputs.version }}
-          body: ${{ steps.changelog.outputs.changelog }}
+          name: Release v${{ steps.get_version.outputs.VERSION }}
+          body_path: release_notes.md
           draft: false
-          prerelease: ${{ contains(steps.version.outputs.version, '-alpha') || contains(steps.version.outputs.version, '-beta') || contains(steps.version.outputs.version, '-rc') }}
+          prerelease: ${{ contains(steps.get_version.outputs.VERSION, '-') }}
+          generate_release_notes: true
+          discussion_category_name: Announcements
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Update CHANGELOG.md
+
+      - name: Update Packagist
         if: success()
         run: |
-          # Check if CHANGELOG.md exists
-          if [ ! -f "CHANGELOG.md" ]; then
-            cat > CHANGELOG.md <<EOF
-          # Changelog
-          
-          All notable changes to this project will be documented in this file.
-          
-          The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-          and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-          
-          EOF
-          fi
-          
-          # Prepend new version to CHANGELOG.md
-          cat > CHANGELOG_NEW.md <<EOF
-          # Changelog
-          
-          All notable changes to this project will be documented in this file.
-          
-          The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-          and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-          
-          ## [${{ steps.version.outputs.version }}] - $(date +%Y-%m-%d)
-          
-          ${{ steps.changelog.outputs.changelog }}
-          
-          EOF
-          
-          # Append the rest of the existing changelog (skip the header)
-          if [ -f "CHANGELOG.md" ]; then
-            tail -n +7 CHANGELOG.md >> CHANGELOG_NEW.md
-          fi
-          
-          mv CHANGELOG_NEW.md CHANGELOG.md
-          
-          # Commit and push
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add CHANGELOG.md
-          git commit -m "Update CHANGELOG.md for ${{ steps.version.outputs.version }}" || true
-          git push origin HEAD:main || true
+          echo "🎉 Release created successfully!"
+          echo "📦 Packagist should automatically update within a few minutes."
+          echo "🔍 Monitor the release at: ${{ github.server_url }}/${{ github.repository }}/releases"
 
-  publish-notification:
-    name: Notify Packagist
-    needs: create-release
+  notify:
     runs-on: ubuntu-latest
+    needs: release
     if: success()
     
     steps:
-      - name: Notify Packagist
+      - name: Notify community
         run: |
-          echo "Release created successfully!"
-          echo "Packagist will automatically detect the new tag and update the package."
-          echo "Check status at: https://packagist.org/packages/bluelucifer/laravel-filament-phpstan"
+          echo "🎉 Release v${{ needs.release.outputs.VERSION }} has been published!"
+          echo "📋 Release notes and assets are available at:"
+          echo "   ${{ github.server_url }}/${{ github.repository }}/releases/tag/v${{ needs.release.outputs.VERSION }}"
+          echo ""
+          echo "📦 Composer users can update with:"
+          echo "   composer update bluelucifer/laravel-filament-phpstan"
+          echo ""
+          echo "🚀 Thank you to all contributors!"
