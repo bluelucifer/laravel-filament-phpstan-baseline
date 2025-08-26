@@ -1,0 +1,101 @@
+# Filament 3.x PHPStan Baseline (Optimized)
+# Performance-optimized patterns with consolidation
+# Last updated: 2025-08
+
+parameters:
+    ignoreErrors:
+        # ============================================
+        # Consolidated Method Calls
+        # ============================================
+        
+        # All Filament component methods (Forms, Tables, etc.) - single pattern
+        - '#^Call to an undefined method Filament\\(Forms|Tables|Infolists|Notifications)\\(Components|Columns|Filters|Actions|Builder)\\[A-Za-z]+::[a-z][a-zA-Z]+\(\)$#'
+        
+        # All Builder methods
+        - '#^Call to an undefined method Filament\\[A-Za-z]+\\Builder::\w+$#'
+        
+        # All Action methods (including modal methods)
+        - '#^Call to an undefined method [A-Za-z\\]+Action::(modal[A-Za-z]+|\w+)\(\)$#'
+        
+        # ============================================
+        # Consolidated Variables & Properties
+        # ============================================
+        
+        # Common undefined variables
+        - '#^Variable \$(data|record|state) might not be defined$#'
+        
+        # Property type specifications - consolidated
+        - '#^Property .+(Page|Widget|Resource|RelationManager)::\$\w+ (has no type specified|type has no value type specified)$#'
+        
+        # Access to properties on mixed/null
+        - '#^(Cannot access|Access to an undefined) property .+ on (mixed|.+\|null)$#'
+        
+        # ============================================
+        # Method Return Types & Parameters
+        # ============================================
+        
+        # All methods without return types
+        - '#^Method .+::(mount|boot|hydrate|dehydrate|updated|updating|beforeSave|afterSave|authorize|getTitle|getHeading|getSubheading|getNavigationGroup|register|handle) has no return type specified$#'
+        
+        # Methods with missing value types
+        - '#^Method .+::(getFormSchema|getRelations|getNavigationItems|getBreadcrumbs|getData|getStats|getColumns|getGlobalSearchResults|getView) return type has no value type specified$#'
+        
+        # Common parameter issues
+        - '#^(Method|Parameter) .+ (has parameter|expects) \$\w+ (with no type specified|.+, mixed given)$#'
+        
+        # ============================================
+        # Form & Table Specific
+        # ============================================
+        
+        # Form/Table callbacks with get/set/state
+        - '#^Parameter \$(get|set|state|records|query|data|row) of .+ expects .+, (mixed|array) given$#'
+        
+        # Form/Table method parameters
+        - '#^Method .+Resource::(form|table)\(\) has parameter \$\w+ with no type specified$#'
+        
+        # ============================================
+        # Array/Offset Access
+        # ============================================
+        
+        # Cannot access offset on various types
+        - '#^Cannot access offset .+ on (array\|null|mixed)$#'
+        
+        # ============================================
+        # String Casting
+        # ============================================
+        
+        # Part of encapsed string cannot be cast
+        - '#^Part \$\w+->.+ \(mixed\) of encapsed string cannot be cast to string$#'
+        
+        # ============================================
+        # Static Methods
+        # ============================================
+        
+        # Resource static methods
+        - '#^(Call to an undefined static method|Cannot call static method) .+Resource::(getModel|query)\(\)$#'
+        
+        # ============================================
+        # Livewire Integration
+        # ============================================
+        
+        # Livewire properties and methods
+        - '#^(Property|Method) .+::\$(listeners|rules|messages|validationAttributes) (has no type specified|return type has no value type specified)$#'
+        
+        # Computed properties
+        - '#^Method .+::computed\w+ has no return type$#'
+        
+        # ============================================
+        # Miscellaneous
+        # ============================================
+        
+        # Panel configuration
+        - '#^Call to an undefined method Filament\\Panel::\w+$#'
+        
+        # Plugin methods
+        - '#^Method .+Plugin::(register|boot) has no return type specified$#'
+        
+        # Tenant properties
+        - '#^Access to an undefined property .+Tenant::\$\w+$#'
+        
+        # File upload and special components
+        - '#^Call to an undefined method Filament\\Forms\\Components\\(FileUpload|Repeater|Builder)::\w+$#'
