@@ -1,31 +1,177 @@
-# PHPStan Level 3-5 Combined Baseline
-# For transitioning from basic to intermediate strictness
-# Last updated: 2025-08
-
-includes:
-    # Basic patterns (levels 0-2)
-    - laravel-11.neon
-    - filament-3.neon
-    - livewire-3.neon
-    
-    # Additional strict patterns for levels 3-5
-    - laravel-11-strict.neon
-    - filament-3-strict.neon
-    - livewire-3-strict.neon
+# PHPStan Strict Level 3-5 Baseline
+# For transitioning from PHPStan level 3 to level 5
+# This baseline helps suppress common errors when adopting stricter type checking
 
 parameters:
     ignoreErrors:
-        # ============================================
-        # Level 3-5 Specific Suppressions
-        # ============================================
+        # Level 3 → 4: Return type coverage
+        -
+            message: '#^Method .+ has no return type specified#'
+            paths:
+                - app/**/*.php
+                - tests/**/*.php
         
-        # Allow mixed in certain contexts during transition
-        - '#Method .+::(handle|__invoke)\(\) has parameter \$.+ with no type specified#'
+        -
+            message: '#^Method .+ return type has no value type specified in iterable type array#'
+            paths:
+                - app/**/*.php
         
-        # Allow missing return types for factories/seeders
-        - '#Method .+Factory::.+ has no return type specified#'
-        - '#Method .+Seeder::.+ has no return type specified#'
+        -
+            message: '#^Method .+ has parameter \$[a-zA-Z_]+ with no value type specified in iterable type array#'
+            paths:
+                - app/**/*.php
         
-        # Allow test assertions without strict types
-        - '#Method .+Test::.+ has no return type specified#'
-        - '#Method .+TestCase::.+ has parameter \$.+ with no type specified#'
+        # Level 4 → 5: Dead code detection
+        -
+            message: '#^Unreachable statement - code above always terminates#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Result of && is always false#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Result of \|\| is always true#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Strict comparison using === between .+ and .+ will always evaluate to (true|false)#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Else branch is unreachable because ternary operator condition is always true#'
+            paths:
+                - app/**/*.php
+        
+        # Type specification requirements
+        -
+            message: '#^Property .+::\$[a-zA-Z_]+ type has no value type specified in iterable type array#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Property .+::\$[a-zA-Z_]+ type has no value type specified in iterable type Collection#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^PHPDoc tag @var for variable \$[a-zA-Z_]+ has no value type specified in iterable type array#'
+            paths:
+                - app/**/*.php
+        
+        # Union type handling
+        -
+            message: '#^Method .+ should return .+\|null but returns .+#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Property .+::\$[a-zA-Z_]+ \(.+\|null\) does not accept .+#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Parameter #\d+ \$[a-zA-Z_]+ of method .+ expects .+, .+\|null given#'
+            paths:
+                - app/**/*.php
+        
+        # Null safety at mid-levels
+        -
+            message: '#^Cannot call method .+ on .+\|null#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Cannot access property .+ on .+\|null#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Cannot access offset .+ on .+\|null#'
+            paths:
+                - app/**/*.php
+        
+        # Type narrowing issues
+        -
+            message: '#^Variable \$[a-zA-Z_]+ in isset\(\) always exists and is not nullable#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Negated boolean expression is always (true|false)#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^If condition is always true#'
+            paths:
+                - app/**/*.php
+        
+        # Mixed type refinement
+        -
+            message: '#^Parameter .+ of method .+ expects .+, mixed given#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Method .+ should return .+ but returns mixed#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Property .+::\$[a-zA-Z_]+ \(.+\) does not accept mixed#'
+            paths:
+                - app/**/*.php
+        
+        # Array shape requirements
+        -
+            message: '#^Method .+ return type has no signature specified for Closure#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Parameter \$[a-zA-Z_]+ of anonymous function has no type specified#'
+            paths:
+                - app/**/*.php
+                - routes/*.php
+        
+        -
+            message: '#^Anonymous function should return .+ but empty return statement found#'
+            paths:
+                - app/**/*.php
+        
+        # Generics and templates
+        -
+            message: '#^Method .+ return type with generic class .+ does not specify its types#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Parameter .+ of method .+ has generic class .+ but does not specify its types#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Property .+::\$[a-zA-Z_]+ with generic class .+ does not specify its types#'
+            paths:
+                - app/**/*.php
+        
+        # Unused code detection
+        -
+            message: '#^Call to function is_null\(\) with .+ will always evaluate to false#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Call to function is_array\(\) with .+ will always evaluate to true#'
+            paths:
+                - app/**/*.php
+        
+        -
+            message: '#^Call to function is_string\(\) with .+ will always evaluate to (true|false)#'
+            paths:
+                - app/**/*.php

@@ -93,6 +93,7 @@ wget https://raw.githubusercontent.com/bluelucifer/laravel-filament-phpstan-base
 
 ### Level-Specific Baselines
 
+- **`level-0-2.neon`** - Levels 0-2 (Basic strictness)
 - **`level-3-5.neon`** - Levels 3-5 (Intermediate strictness)
 - **`level-6-8.neon`** - Levels 6-8 (Advanced strictness)
 - **`level-9-10.neon`** - Levels 9-10 (Maximum strictness)
@@ -147,6 +148,7 @@ Start with permissive baselines and gradually increase strictness:
 includes:
     - vendor/bluelucifer/laravel-filament-phpstan/baselines/laravel-11.neon
     - vendor/bluelucifer/laravel-filament-phpstan/baselines/filament-3.neon
+    - vendor/bluelucifer/laravel-filament-phpstan/baselines/level-0-2.neon
 
 # Level 3-5 (Intermediate)  
 includes:
@@ -183,6 +185,15 @@ We welcome contributions! Please help us improve these baselines:
 - Group patterns by feature/package
 - Test patterns with real projects
 - Keep patterns as specific as possible
+
+### File Naming Convention
+
+When contributing new baseline files, please follow these naming conventions:
+
+- **Package baselines**: `{package}-{version}.neon` (e.g., `laravel-11.neon`, `filament-3.neon`)
+- **Level transition baselines**: `level-{start}-to-{end}.neon` (e.g., `level-0-to-2.neon`)
+- Use lowercase and hyphens for consistency
+- Version numbers should match major versions only
 
 ## 📖 Patterns Documentation
 

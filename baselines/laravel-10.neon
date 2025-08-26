@@ -1,0 +1,143 @@
+# Laravel 10.x PHPStan Baseline Configuration
+# Compatible with Laravel 10.0 - 10.x
+# Generated for projects using Laravel 10 with PHPStan Level 5+
+
+parameters:
+    ignoreErrors:
+        # Eloquent ORM - Model Properties and Relationships (Laravel 10 specific)
+        -
+            message: '#^Access to undefined property Illuminate\\Database\\Eloquent\\Model::\$[a-zA-Z_]+#'
+            path: app/Models/*.php
+        -
+            message: '#^Call to undefined method Illuminate\\Database\\Eloquent\\Builder::(where|orWhere|whereIn|whereBetween|whereNull|whereNotNull|orderBy|latest|oldest|limit|offset|take|skip|first|get|find|findOrFail|count|sum|avg|min|max|exists|doesntExist|with|withCount|has|doesntHave|whereHas|withWhereHas|whereDoesntHave|withTrashed|onlyTrashed|withoutGlobalScope|withoutGlobalScopes)#'
+            paths:
+                - app/Models/*.php
+                - app/Http/Controllers/*.php
+                - app/Services/*.php
+        
+        # HTTP Requests and Form Requests (Laravel 10)
+        -
+            message: '#^Call to undefined method Illuminate\\Http\\Request::validated\(\)#'
+            paths:
+                - app/Http/Controllers/*.php
+        -
+            message: '#^Access to undefined property Illuminate\\Http\\Request::\$[a-zA-Z_]+#'
+            paths:
+                - app/Http/Controllers/*.php
+                - app/Http/Middleware/*.php
+        
+        # Facades and Helpers (Laravel 10 specific)
+        -
+            message: '#^Call to undefined static method (Auth|Cache|Config|DB|Event|File|Gate|Hash|Http|Log|Mail|Notification|Password|Queue|RateLimiter|Redis|Request|Response|Route|Schema|Session|Storage|URL|Validator|View)::[a-zA-Z_]+\(\)#'
+            paths:
+                - app/**/*.php
+                - config/*.php
+                - routes/*.php
+        
+        # Collections (Laravel 10)
+        -
+            message: '#^Call to undefined method Illuminate\\Support\\Collection::(map|filter|reject|each|every|some|contains|containsStrict|diff|diffAssoc|diffKeys|except|groupBy|intersect|intersectByKeys|isEmpty|isNotEmpty|keyBy|keys|last|mapInto|mapSpread|mapToGroups|mapWithKeys|merge|nth|only|pad|partition|pipe|pluck|pop|prepend|pull|push|put|random|reduce|replace|replaceRecursive|reverse|search|shift|shuffle|skip|skipUntil|skipWhile|slice|sole|some|sort|sortBy|sortByDesc|sortDesc|sortKeys|sortKeysDesc|splice|split|sum|take|takeUntil|takeWhile|tap|times|toArray|toJson|transform|union|unique|uniqueStrict|unless|unlessEmpty|unlessNotEmpty|unwrap|values|when|whenEmpty|whenNotEmpty|where|whereStrict|whereBetween|whereIn|whereInStrict|whereInstanceOf|whereNotBetween|whereNotIn|whereNotInStrict|whereNotNull|whereNull|wrap|zip)#'
+            paths:
+                - app/**/*.php
+        
+        # Validation Rules (Laravel 10)
+        -
+            message: '#^Call to undefined static method Illuminate\\Support\\Facades\\Validator::make\(\)#'
+            paths:
+                - app/Http/Controllers/*.php
+                - app/Http/Requests/*.php
+        -
+            message: '#^Call to undefined method Illuminate\\Validation\\Validator::(fails|failed|passes|errors|validated|safe|sometimes|after|stopOnFirstFailure)#'
+            paths:
+                - app/**/*.php
+        
+        # Database and Migrations (Laravel 10)
+        -
+            message: '#^Call to undefined method Illuminate\\Database\\Schema\\Blueprint::(id|uuid|foreignId|foreignIdFor|foreignUuid|bigIncrements|bigInteger|binary|boolean|char|dateTimeTz|dateTime|date|decimal|double|enum|float|foreignId|geometry|geometryCollection|increments|integer|ipAddress|json|jsonb|lineString|longText|macAddress|mediumIncrements|mediumInteger|mediumText|morphs|nullableMorphs|multiLineString|multiPoint|multiPolygon|nullableTimestamps|point|polygon|rememberToken|set|smallIncrements|smallInteger|softDeletesTz|softDeletes|string|text|timeTz|time|timestampTz|timestamp|timestampsTz|timestamps|tinyIncrements|tinyInteger|tinyText|unsignedBigInteger|unsignedDecimal|unsignedInteger|unsignedMediumInteger|unsignedSmallInteger|unsignedTinyInteger|uuidMorphs|nullableUuidMorphs|ulid|year)#'
+            paths:
+                - database/migrations/*.php
+        
+        # Service Container and Dependency Injection (Laravel 10)
+        -
+            message: '#^Call to undefined static method Illuminate\\Support\\Facades\\App::(make|makeWith|singleton|bind|instance|when|resolved|resolving|afterResolving|bindIf|bindMethod|rebinding|refresh|extend|addContextualBinding|tag|tagged|alias|aliases|isAlias|bound|has|resolved|isShared|getBindings|getAlias|forgetInstance|forgetInstances|flush|getInstance)#'
+            paths:
+                - app/**/*.php
+                - config/*.php
+        
+        # Events and Listeners (Laravel 10)
+        -
+            message: '#^Call to undefined static method Illuminate\\Support\\Facades\\Event::(listen|dispatch|push|subscribe|until|flush|forgetPushed|forget|hasListeners|assertDispatched|assertDispatchedTimes|assertNotDispatched|assertNothingDispatched|assertListening|fake|fakeFor|fakeExcept|fakeExceptFor)#'
+            paths:
+                - app/**/*.php
+        
+        # Jobs and Queues (Laravel 10)
+        -
+            message: '#^Call to undefined method .+Job::(dispatch|dispatchIf|dispatchUnless|dispatchSync|dispatchNow|dispatchAfterResponse|withChain|allOnConnection|allOnQueue|delay|afterCommit|beforeCommit)#'
+            paths:
+                - app/Jobs/*.php
+                - app/Http/Controllers/*.php
+        
+        # Notifications (Laravel 10)
+        -
+            message: '#^Call to undefined method Illuminate\\Notifications\\Notification::(via|toMail|toDatabase|toBroadcast|toArray)#'
+            paths:
+                - app/Notifications/*.php
+        
+        # Middleware (Laravel 10)
+        -
+            message: '#^Call to undefined method .+::(handle|terminate)#'
+            paths:
+                - app/Http/Middleware/*.php
+        
+        # Policies and Authorization (Laravel 10)
+        -
+            message: '#^Call to undefined method .+Policy::(viewAny|view|create|update|delete|restore|forceDelete)#'
+            paths:
+                - app/Policies/*.php
+        
+        # Artisan Commands (Laravel 10)
+        -
+            message: '#^Access to undefined property Illuminate\\Console\\Command::\$(signature|description|hidden)#'
+            paths:
+                - app/Console/Commands/*.php
+        -
+            message: '#^Call to undefined method Illuminate\\Console\\Command::(argument|option|confirm|ask|anticipate|askWithCompletion|secret|choice|table|info|line|comment|question|error|warn|alert|call|callSilent|callSilently|runCommand|hasArgument|hasOption)#'
+            paths:
+                - app/Console/Commands/*.php
+        
+        # API Resources (Laravel 10)
+        -
+            message: '#^Call to undefined method Illuminate\\Http\\Resources\\Json\\JsonResource::(toArray|with|additional|response|withResponse)#'
+            paths:
+                - app/Http/Resources/*.php
+        
+        # Testing Helpers (Laravel 10)
+        -
+            message: '#^Call to undefined method Illuminate\\Foundation\\Testing\\TestCase::(get|post|put|patch|delete|json|getJson|postJson|putJson|patchJson|deleteJson|call|withHeaders|withHeader|withToken|withServerVariables|withoutMiddleware|withMiddleware|actingAs|be|assertAuthenticated|assertGuest|assertAuthenticatedAs|assertCredentials|assertInvalidCredentials|assertDatabaseHas|assertDatabaseMissing|assertDatabaseCount|assertDeleted|assertSoftDeleted|assertNotSoftDeleted|assertModelExists|assertModelMissing|expectsDatabaseQueryCount|seed)#'
+            paths:
+                - tests/**/*.php
+        
+        # Cache Operations (Laravel 10)
+        -
+            message: '#^Call to undefined static method Illuminate\\Support\\Facades\\Cache::(has|get|many|getMultiple|pull|put|putMany|setMultiple|add|increment|decrement|forever|remember|sear|rememberForever|forget|delete|deleteMultiple|clear|flush|getPrefix|driver|extend|setDefaultDriver|purge|lock|restoreLock|store|setStore)#'
+            paths:
+                - app/**/*.php
+        
+        # File Storage (Laravel 10)
+        -
+            message: '#^Call to undefined static method Illuminate\\Support\\Facades\\Storage::(drive|disk|cloud|build|buildTemporaryUrlsUsing|extend|purge|setApplication|put|putFile|putFileAs|get|exists|missing|download|url|temporaryUrl|size|lastModified|path|visibility|setVisibility|prepend|append|delete|copy|move|makeDirectory|deleteDirectory|files|allFiles|directories|allDirectories)#'
+            paths:
+                - app/**/*.php
+        
+        # Session Management (Laravel 10)
+        -
+            message: '#^Call to undefined static method Illuminate\\Support\\Facades\\Session::(get|has|exists|missing|put|push|flash|now|reflash|keep|forget|flush|regenerate|invalidate|migrate|isStarted|getName|setName|getId|setId|isValidId|start|save|all|replace|remove|pull|only|token|regenerateToken|previousUrl|setPreviousUrl|getHandler|setHandler|handlerNeedsRequest|setRequestOnHandler)#'
+            paths:
+                - app/**/*.php
+        
+        # URL Generation (Laravel 10)
+        -
+            message: '#^Call to undefined static method Illuminate\\Support\\Facades\\URL::(full|current|previous|to|secure|route|signedRoute|temporarySignedRoute|hasValidSignature|hasValidRelativeSignature|hasCorrectSignature|signatureHasNotExpired|action|asset|secureAsset|assetFrom|formatScheme|forceScheme|forceRootUrl|formatRoot|format|isValidUrl|defaults|getDefaultParameters|setDefaultParameters|toRoute|toAction)#'
+            paths:
+                - app/**/*.php
+                - resources/views/**/*.blade.php
