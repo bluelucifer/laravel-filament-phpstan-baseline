@@ -10,6 +10,7 @@ This repository provides curated PHPStan baseline configurations and ignore patt
 - [Quick Start](#quick-start)
 - [Available Baselines](#available-baselines)
 - [Usage](#usage)
+- [Docker Development Environment](#docker-development-environment)
 - [Contributing](#contributing)
 - [Patterns Documentation](#patterns-documentation)
 
@@ -169,6 +170,108 @@ includes:
 2. **Stabilize (Level 3-5)**: Add `level-3-5.neon`
 3. **Improve (Level 6-8)**: Switch to `level-6-8.neon`
 4. **Perfect (Level 9-10)**: Use `level-9-10.neon` for maximum type safety
+
+## 🐳 Docker Development Environment
+
+We provide a complete Docker-based development environment for contributors and users who want to test baselines locally.
+
+### Quick Start with Docker
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/bluelucifer/laravel-filament-phpstan-baseline.git
+cd laravel-filament-phpstan-baseline
+
+# 2. Run setup script
+./scripts/dev-setup.sh
+
+# 3. Start development environment
+docker-compose up app
+```
+
+### Docker Commands
+
+```bash
+# Start development container
+docker-compose up app
+
+# Enter container shell
+docker-compose run --rm app bash
+
+# Run tests
+docker-compose run --rm app composer test
+
+# Test specific baseline
+./scripts/test-baseline.sh laravel-11.neon
+
+# Validate all baselines
+./scripts/validate-all.sh
+
+# Test with multiple PHP versions
+docker-compose --profile multi-php up
+```
+
+### Available Services
+
+- **`app`**: Main development environment (PHP 8.2, Composer, Git)
+- **`php81`**, **`php82`**, **`php83`**: Multi-version PHP testing
+- **`laravel-test`**: Laravel application testing environment
+- **`docs`**: Documentation server (nginx on port 8080)
+
+### Environment Configuration
+
+Copy `.env.example` to `.env` and customize:
+
+```bash
+# PHP Version (8.1, 8.2, 8.3)
+PHP_VERSION=8.2
+
+# PHPStan Configuration
+PHPSTAN_LEVEL=8
+PHPSTAN_MEMORY_LIMIT=1G
+
+# Development mode
+XDEBUG_MODE=off
+```
+
+### Development Scripts
+
+| Script | Purpose |
+|--------|---------|
+| `scripts/dev-setup.sh` | Initial environment setup |
+| `scripts/test-baseline.sh` | Test specific baseline file |
+| `scripts/validate-all.sh` | Validate all baseline files |
+
+### Docker Profiles
+
+Use Docker Compose profiles for specific scenarios:
+
+```bash
+# Multi-PHP version testing
+docker-compose --profile multi-php up
+
+# Testing environment
+docker-compose --profile testing up
+
+# Documentation server
+docker-compose --profile docs up
+```
+
+### Troubleshooting Docker
+
+```bash
+# Rebuild containers
+docker-compose build --no-cache
+
+# Clean up volumes
+docker-compose down -v
+
+# Check logs
+docker-compose logs app
+
+# Reset permissions
+docker-compose run --rm app chown -R developer:developer /workspace
+```
 
 ## 🤝 Contributing
 
