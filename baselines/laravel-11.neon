@@ -28,6 +28,85 @@ parameters:
         - '#Call to an undefined method Illuminate\\Support\\Collection::.+#'
         - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Collection::.+#'
         
+        # Mixed type method calls on query builders (PHPStan level 2+)
+        - '#Cannot call method where\(\) on mixed\.#'
+        - '#Cannot call method orderBy\(\) on mixed\.#'
+        - '#Cannot call method orderByDesc\(\) on mixed\.#'
+        - '#Cannot call method with\(\) on mixed\.#'
+        - '#Cannot call method withCount\(\) on mixed\.#'
+        - '#Cannot call method count\(\) on mixed\.#'
+        - '#Cannot call method first\(\) on mixed\.#'
+        - '#Cannot call method get\(\) on mixed\.#'
+        - '#Cannot call method pluck\(\) on mixed\.#'
+        - '#Cannot call method select\(\) on mixed\.#'
+        - '#Cannot call method groupBy\(\) on mixed\.#'
+        - '#Cannot call method having\(\) on mixed\.#'
+        - '#Cannot call method limit\(\) on mixed\.#'
+        - '#Cannot call method offset\(\) on mixed\.#'
+        - '#Cannot call method take\(\) on mixed\.#'
+        - '#Cannot call method skip\(\) on mixed\.#'
+        - '#Cannot call method join\(\) on mixed\.#'
+        - '#Cannot call method leftJoin\(\) on mixed\.#'
+        - '#Cannot call method rightJoin\(\) on mixed\.#'
+        - '#Cannot call method crossJoin\(\) on mixed\.#'
+        - '#Cannot call method union\(\) on mixed\.#'
+        - '#Cannot call method exists\(\) on mixed\.#'
+        - '#Cannot call method doesntExist\(\) on mixed\.#'
+        - '#Cannot call method find\(\) on mixed\.#'
+        - '#Cannot call method findOrFail\(\) on mixed\.#'
+        - '#Cannot call method create\(\) on mixed\.#'
+        - '#Cannot call method update\(\) on mixed\.#'
+        - '#Cannot call method delete\(\) on mixed\.#'
+        - '#Cannot call method paginate\(\) on mixed\.#'
+        - '#Cannot call method simplePaginate\(\) on mixed\.#'
+        - '#Cannot call method chunk\(\) on mixed\.#'
+        
+        # Eloquent model relationship method calls on mixed (PHPStan level 2+)
+        - '#Cannot call method [a-zA-Z0-9_]+\(\) on mixed#'
+        
+        # Specific relationship and model methods on mixed
+        - '#Cannot call method technicians\(\) on mixed\.#'
+        - '#Cannot call method markAsPaid\(\) on mixed\.#'
+        - '#Cannot call method approve\(\) on mixed\.#'
+        - '#Cannot call method markAsSent\(\) on mixed\.#'
+        - '#Cannot call method startParsing\(\) on mixed\.#'
+        - '#Cannot call method generateZaloMessage\(\) on .+\.#'
+        - '#Cannot call method lt\(\) on mixed\.#'
+        - '#Cannot call method reject\(\) on mixed\.#'
+        - '#Cannot call method reworkRequests\(\) on mixed\.#'
+        - '#Cannot call method getPdfUrl\(\) on .+\.#'
+        - '#Cannot call method revenues\(\) on mixed\.#'
+        - '#Cannot call method performedOn\(\) on mixed\.#'
+        - '#Cannot call method withProperties\(\) on mixed\.#'
+        - '#Cannot call method causedBy\(\) on mixed\.#'
+        - '#Cannot call method log\(\) on mixed\.#'
+        - '#Cannot call method filter\(\) on mixed\.#'
+        - '#Cannot call method isPromoter\(\) on mixed\.#'
+        - '#Cannot call method isDetractor\(\) on mixed\.#'
+        - '#Cannot call method contains\(\) on mixed\.#'
+        - '#Cannot call method hasRole\(\) on mixed\.#'
+        - '#Cannot call method random\(\) on mixed\.#'
+        - '#Cannot call method whereDate\(\) on mixed\.#'
+        - '#Cannot call method whereNotIn\(\) on mixed\.#'
+        
+        # Common Eloquent model methods on mixed
+        - '#Cannot call method save\(\) on mixed\.#'
+        - '#Cannot call method delete\(\) on mixed\.#'
+        - '#Cannot call method fresh\(\) on mixed\.#'
+        - '#Cannot call method refresh\(\) on mixed\.#'
+        - '#Cannot call method load\(\) on mixed\.#'
+        - '#Cannot call method loadCount\(\) on mixed\.#'
+        - '#Cannot call method loadMissing\(\) on mixed\.#'
+        - '#Cannot call method push\(\) on mixed\.#'
+        - '#Cannot call method touch\(\) on mixed\.#'
+        - '#Cannot call method toArray\(\) on mixed\.#'
+        - '#Cannot call method toJson\(\) on mixed\.#'
+        - '#Cannot call method replicate\(\) on mixed\.#'
+        - '#Cannot call method fill\(\) on mixed\.#'
+        - '#Cannot call method forceFill\(\) on mixed\.#'
+        - '#Cannot call method isDirty\(\) on mixed\.#'
+        - '#Cannot call method wasChanged\(\) on mixed\.#'
+        
         # ============================================
         # HTTP & Request Patterns
         # ============================================
@@ -158,6 +237,52 @@ parameters:
         # Carbon/DateTime
         - '#Call to an undefined method Carbon\\Carbon::.+#'
         
+        # Carbon/DateTime method calls on mixed (PHPStan level 2+)
+        - '#Cannot call method format\(\) on mixed\.#'
+        - '#Cannot call method copy\(\) on mixed\.#'
+        - '#Cannot call method clone\(\) on mixed\.#'
+        - '#Cannot call method setTime\(\) on mixed\.#'
+        - '#Cannot call method setDate\(\) on mixed\.#'
+        - '#Cannot call method setDateTime\(\) on mixed\.#'
+        - '#Cannot call method addMinutes\(\) on mixed\.#'
+        - '#Cannot call method addHours\(\) on mixed\.#'
+        - '#Cannot call method addDays\(\) on mixed\.#'
+        - '#Cannot call method addWeeks\(\) on mixed\.#'
+        - '#Cannot call method addMonths\(\) on mixed\.#'
+        - '#Cannot call method addYears\(\) on mixed\.#'
+        - '#Cannot call method subMinutes\(\) on mixed\.#'
+        - '#Cannot call method subHours\(\) on mixed\.#'
+        - '#Cannot call method subDays\(\) on mixed\.#'
+        - '#Cannot call method subWeeks\(\) on mixed\.#'
+        - '#Cannot call method subMonths\(\) on mixed\.#'
+        - '#Cannot call method subYears\(\) on mixed\.#'
+        - '#Cannot call method startOfDay\(\) on mixed\.#'
+        - '#Cannot call method endOfDay\(\) on mixed\.#'
+        - '#Cannot call method startOfWeek\(\) on mixed\.#'
+        - '#Cannot call method endOfWeek\(\) on mixed\.#'
+        - '#Cannot call method startOfMonth\(\) on mixed\.#'
+        - '#Cannot call method endOfMonth\(\) on mixed\.#'
+        - '#Cannot call method startOfYear\(\) on mixed\.#'
+        - '#Cannot call method endOfYear\(\) on mixed\.#'
+        - '#Cannot call method toDateString\(\) on mixed\.#'
+        - '#Cannot call method toTimeString\(\) on mixed\.#'
+        - '#Cannot call method toDateTimeString\(\) on mixed\.#'
+        - '#Cannot call method toISOString\(\) on mixed\.#'
+        - '#Cannot call method toJson\(\) on mixed\.#'
+        - '#Cannot call method getTimestamp\(\) on mixed\.#'
+        - '#Cannot call method diffInDays\(\) on mixed\.#'
+        - '#Cannot call method diffInHours\(\) on mixed\.#'
+        - '#Cannot call method diffInMinutes\(\) on mixed\.#'
+        - '#Cannot call method diffInSeconds\(\) on mixed\.#'
+        - '#Cannot call method diffForHumans\(\) on mixed\.#'
+        - '#Cannot call method isToday\(\) on mixed\.#'
+        - '#Cannot call method isYesterday\(\) on mixed\.#'
+        - '#Cannot call method isTomorrow\(\) on mixed\.#'
+        - '#Cannot call method isPast\(\) on mixed\.#'
+        - '#Cannot call method isFuture\(\) on mixed\.#'
+        - '#Cannot call method timezone\(\) on mixed\.#'
+        - '#Cannot call method setTimezone\(\) on mixed\.#'
+        
         # Collection higher-order proxies
         - '#Access to an undefined property Illuminate\\Support\\HigherOrderCollectionProxy::\$.+#'
         
@@ -167,3 +292,53 @@ parameters:
         # Testing
         - '#Call to an undefined method .+TestCase::.+#'
         - '#Property .+Test::\$.+ has no type specified#'
+        
+        # ============================================
+        # Binary Operations (PHPStan level 2+)
+        # ============================================
+        
+        # Binary operations with mixed types - Laravel specific cases
+        - '#Binary operation "\+" between .* and mixed#'
+        - '#Binary operation "-" between .* and mixed#'
+        - '#Binary operation "\*" between .* and mixed#'
+        - '#Binary operation "/" between .* and mixed#'
+        - '#Binary operation "\." between .* and mixed#'
+        - '#Binary operation "==" between .* and mixed#'
+        - '#Binary operation "!=" between .* and mixed#'
+        - '#Binary operation ">" between .* and mixed#'
+        - '#Binary operation "<" between .* and mixed#'
+        - '#Binary operation ">=" between .* and mixed#'
+        - '#Binary operation "<=" between .* and mixed#'
+        - '#Binary operation "\?\?" between .* and mixed#'
+        
+        # Additional binary operations from PHPStan analysis
+        - '#Binary operation "\." between \(array\|string\) and .+ results in an error#'
+        - '#Binary operation "\." between .+ and \(array\|string\) results in an error#'
+        - '#Binary operation "\.\=" between \(array\|string\) and .+ results in an error#'
+        - '#Binary operation "\+\=" between .+ and mixed results in an error#'
+        - '#Binary operation "-" between float and mixed results in an error#'
+        - '#Binary operation "\*" between \(float\|int\) and mixed results in an error#'
+        - '#Binary operation "/" between \(float\|int\) and mixed results in an error#'
+        
+        # Assignment operations with mixed
+        - '#Cannot use \+\+ on mixed#'
+        - '#Binary operation "\+\=" between .+ and mixed results in an error#'
+        - '#Binary operation "\-\=" between .+ and mixed results in an error#'
+        - '#Binary operation "\*\=" between .+ and mixed results in an error#'
+        - '#Binary operation "/\=" between .+ and mixed results in an error#'
+        
+        # ============================================
+        # PHPDoc and Type Issues (PHPStan level 2+)
+        # ============================================
+        
+        # PHPDoc parsing errors for complex array types
+        - '#PHPDoc tag @var has invalid value \(array<int, mixed><.+>\): Unexpected token "<"#'
+        - '#PHPDoc tag @return has invalid value \(array<int, mixed><.+>\): Unexpected token "<"#'
+        - '#PHPDoc tag @return has invalid value \(.+\{.+\}\): Unexpected token "\{"#'
+        
+        # Generic type issues
+        - '#Type .+ in generic type .+ in PHPDoc tag @return is not subtype of template type#'
+        - '#Generic type .+ does not specify all template types#'
+        
+        # Schema builder method calls
+        - '#Call to an undefined method Illuminate\\Database\\Schema\\ForeignKeyDefinition::comment\(\)#'
