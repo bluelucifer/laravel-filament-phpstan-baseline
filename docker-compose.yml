@@ -1,0 +1,106 @@
+services:
+  # Main development environment
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel-filament-phpstan-dev
+    volumes:
+      - .:/workspace
+      - composer-cache:/home/developer/.composer/cache
+    environment:
+      - PHP_VERSION=${PHP_VERSION:-8.2}
+      - COMPOSER_CACHE_DIR=/home/developer/.composer/cache
+    working_dir: /workspace
+    tty: true
+    stdin_open: true
+    networks:
+      - phpstan-network
+
+  # Laravel test environment
+  laravel-test:
+    image: laravelphp/vapor:php82
+    container_name: laravel-baseline-test
+    volumes:
+      - ./baselines:/app/phpstan/baselines:ro
+      - ./tests:/app/phpstan/tests:ro
+      - ./composer.json:/app/phpstan/composer.json:ro
+      - ./phpunit.xml:/app/phpstan/phpunit.xml:ro
+    working_dir: /app/phpstan
+    environment:
+      - APP_ENV=testing
+    networks:
+      - phpstan-network
+    profiles:
+      - testing
+
+  # Multi-PHP version testing
+  php81:
+    image: php:8.1-cli
+    container_name: phpstan-php81
+    volumes:
+      - .:/workspace
+      - composer-cache-81:/tmp/composer-cache
+    environment:
+      - COMPOSER_CACHE_DIR=/tmp/composer-cache
+    working_dir: /workspace
+    networks:
+      - phpstan-network
+    profiles:
+      - multi-php
+
+  php82:
+    image: php:8.2-cli
+    container_name: phpstan-php82
+    volumes:
+      - .:/workspace
+      - composer-cache-82:/tmp/composer-cache
+    environment:
+      - COMPOSER_CACHE_DIR=/tmp/composer-cache
+    working_dir: /workspace
+    networks:
+      - phpstan-network
+    profiles:
+      - multi-php
+
+  php83:
+    image: php:8.3-cli
+    container_name: phpstan-php83
+    volumes:
+      - .:/workspace
+      - composer-cache-83:/tmp/composer-cache
+    environment:
+      - COMPOSER_CACHE_DIR=/tmp/composer-cache
+    working_dir: /workspace
+    networks:
+      - phpstan-network
+    profiles:
+      - multi-php
+
+  # Documentation server (for development docs)
+  docs:
+    image: nginx:alpine
+    container_name: phpstan-docs
+    ports:
+      - "8080:80"
+    volumes:
+      - ./docs:/usr/share/nginx/html:ro
+    networks:
+      - phpstan-network
+    profiles:
+      - docs
+
+volumes:
+  composer-cache:
+    name: phpstan-composer-cache
+  composer-cache-81:
+    name: phpstan-composer-cache-81
+  composer-cache-82:
+    name: phpstan-composer-cache-82
+  composer-cache-83:
+    name: phpstan-composer-cache-83
+
+networks:
+  phpstan-network:
+    name: phpstan-network
+    driver: bridge

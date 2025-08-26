@@ -20,4 +20,4 @@ phpstan.neon.dist
 *.log
 
 # OS
-Thumbs.db
+Thumbs.db.phpunit.result.cache
