@@ -60,11 +60,27 @@ jobs:
       
       - name: Install PHPStan
         run: |
-          composer require --dev phpstan/phpstan:${{ matrix.phpstan }} --no-interaction --no-update
+          if [[ "${{ matrix.phpstan }}" == "^2.0" ]]; then
+            # For PHPStan 2.x, we need Larastan 3.x which requires PHP 8.2+
+            if [[ "${{ matrix.php }}" == "8.1" ]]; then
+              echo "Skipping PHPStan 2.x on PHP 8.1 (requires PHP 8.2+)"
+              exit 0
+            fi
+            composer require --dev phpstan/phpstan:"${{ matrix.phpstan }}" larastan/larastan:"^3.0" --no-interaction --no-update
+          else
+            # For PHPStan 1.x, use Larastan 2.x
+            composer require --dev phpstan/phpstan:"${{ matrix.phpstan }}" larastan/larastan:"^2.0" --no-interaction --no-update
+          fi
           composer update --no-progress --prefer-dist --optimize-autoloader
       
       - name: Test baseline loading
         run: |
+          # Skip if PHPStan 2.x on PHP 8.1
+          if [[ "${{ matrix.phpstan }}" == "^2.0" ]] && [[ "${{ matrix.php }}" == "8.1" ]]; then
+            echo "Skipping test for PHPStan 2.x on PHP 8.1"
+            exit 0
+          fi
+          
           for file in baselines/*.neon; do
             echo "Testing $file with PHPStan"
             # Create a test configuration that includes the baseline
@@ -82,6 +98,12 @@ jobs:
       
       - name: Verify extension.neon
         run: |
+          # Skip if PHPStan 2.x on PHP 8.1
+          if [[ "${{ matrix.phpstan }}" == "^2.0" ]] && [[ "${{ matrix.php }}" == "8.1" ]]; then
+            echo "Skipping extension.neon test for PHPStan 2.x on PHP 8.1"
+            exit 0
+          fi
+          
           echo "Testing extension.neon"
           vendor/bin/phpstan analyse --configuration=extension.neon --no-progress || true
 

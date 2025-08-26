@@ -93,9 +93,9 @@ wget https://raw.githubusercontent.com/bluelucifer/laravel-filament-phpstan-base
 
 ### Level-Specific Baselines
 
-- **`strict-level-0-2.neon`** - Transition from level 0 to 2
-- **`strict-level-3-5.neon`** - Transition from level 3 to 5
-- **`strict-level-6-8.neon`** - Transition from level 6 to 8
+- **`level-0-to-2.neon`** - Transition from level 0 to 2
+- **`level-3-to-5.neon`** - Transition from level 3 to 5
+- **`level-6-to-8.neon`** - Transition from level 6 to 8
 
 ## 🔧 Usage
 
@@ -139,15 +139,15 @@ Start with permissive baselines and gradually increase strictness:
 ```yaml
 # Level 0-2 (Beginner)
 includes:
-    - .../baselines/strict-level-0-2.neon
+    - .../baselines/level-0-to-2.neon
 
 # Level 3-5 (Intermediate)  
 includes:
-    - .../baselines/strict-level-3-5.neon
+    - .../baselines/level-3-to-5.neon
 
 # Level 6-8 (Advanced)
 includes:
-    - .../baselines/strict-level-6-8.neon
+    - .../baselines/level-6-to-8.neon
 ```
 
 ## 🤝 Contributing
@@ -165,6 +165,15 @@ We welcome contributions! Please help us improve these baselines:
 - Group patterns by feature/package
 - Test patterns with real projects
 - Keep patterns as specific as possible
+
+### File Naming Convention
+
+When contributing new baseline files, please follow these naming conventions:
+
+- **Package baselines**: `{package}-{version}.neon` (e.g., `laravel-11.neon`, `filament-3.neon`)
+- **Level transition baselines**: `level-{start}-to-{end}.neon` (e.g., `level-0-to-2.neon`)
+- Use lowercase and hyphens for consistency
+- Version numbers should match major versions only
 
 ## 📖 Patterns Documentation
 
