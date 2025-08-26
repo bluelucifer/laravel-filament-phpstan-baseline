@@ -1,0 +1,128 @@
+# Livewire 3.x PHPStan Strict Baseline (Levels 3-10)
+# Additional exception patterns for higher PHPStan levels
+# Last updated: 2025-08
+
+parameters:
+    ignoreErrors:
+        # ============================================
+        # Level 3+ Patterns
+        # ============================================
+        
+        # Property binding arrays
+        - '#Offset .+ does not exist on array{#'
+        - '#Cannot access offset .+ on mixed#'
+        
+        # Wire:model array access
+        - '#Cannot access offset .+ on .+Component#'
+        
+        # ============================================
+        # Level 4+ Patterns
+        # ============================================
+        
+        # Lifecycle method returns
+        - '#Result of method .+Component::mount\(\) \(void\) is used#'
+        - '#Result of method .+Component::boot\(\) \(void\) is used#'
+        
+        # Event emissions
+        - '#Result of method .+::dispatch\(\) \(void\) is used#'
+        - '#Result of method .+::dispatchBrowserEvent\(\) \(void\) is used#'
+        
+        # ============================================
+        # Level 5+ Patterns
+        # ============================================
+        
+        # Component inheritance
+        - '#Return type \(.+\) of method .+Component::render\(\) should be covariant#'
+        - '#Parameter \#\d+ \$.+ of method .+Component::mount\(\) should be contravariant#'
+        
+        # Computed property types
+        - '#Property .+Component::\$.+ \(.+\) does not accept mixed#'
+        
+        # ============================================
+        # Level 6+ Patterns
+        # ============================================
+        
+        # Missing array type specifications
+        - '#Property .+Component::\$rules type has no value type specified in iterable type array#'
+        - '#Property .+Component::\$messages type has no value type specified in iterable type array#'
+        - '#Property .+Component::\$listeners type has no value type specified in iterable type array#'
+        
+        # ============================================
+        # Level 7+ Patterns
+        # ============================================
+        
+        # Nullable property access
+        - '#Cannot access property .+ on .+\|null#'
+        - '#Cannot call method .+ on .+\|null#'
+        
+        # Form array state
+        - '#Property .+Component::\$form \(array\|null\) does not accept mixed#'
+        
+        # ============================================
+        # Level 8+ Patterns
+        # ============================================
+        
+        # Validation array shapes
+        - '#Method .+Component::rules\(\) should return array<string, .+> but returns array<.+, mixed>#'
+        - '#Method .+Component::messages\(\) should return array<string, string> but returns#'
+        
+        # JavaScript evaluation
+        - '#Method .+::js\(\) expects string but .+ given#'
+        - '#Method .+::dispatchBrowserEvent\(\) expects string but mixed given#'
+        
+        # ============================================
+        # Level 9+ Patterns
+        # ============================================
+        
+        # Strict property comparisons
+        - '#Strict comparison using === between .+ and null will always evaluate#'
+        - '#Strict comparison using !== between mixed and .+ will always evaluate#'
+        
+        # Always true/false in reactive properties
+        - '#If condition is always true#'
+        - '#Property .+Component::\$.+ is always true#'
+        
+        # ============================================
+        # Level 10 Patterns
+        # ============================================
+        
+        # Complete type coverage
+        - '#Property .+Component::\$.+ has no type specified#'
+        - '#Method .+Component::.+\(\) has no return type specified#'
+        - '#Method .+Component::.+\(\) has parameter \$.+ with no type specified#'
+        
+        # Implicit mixed usage
+        - '#Cannot assign mixed to property .+Component::\$.+ of type#'
+        - '#Property .+Component::\$.+ \(.+\) on left side of \?\?= is not nullable#'
+        
+        # ============================================
+        # Livewire-Specific Strict Patterns
+        # ============================================
+        
+        # Entangle/Alpine integration
+        - '#Method .+::entangle\(\) expects string but mixed given#'
+        - '#Property .+Component::\$.+ used in Alpine.js binding has no type#'
+        
+        # File upload strict typing
+        - '#Property .+Component::\$.+Upload type should be TemporaryUploadedFile\|null#'
+        - '#Method .+::validateOnly\(\) expects string but mixed given#'
+        
+        # Pagination strict typing
+        - '#Method .+Component::setPage\(\) expects int but mixed given#'
+        - '#Method .+Component::resetPage\(\) expects string\|null but mixed given#'
+        
+        # Testing strict types
+        - '#Method Livewire\\Testing\\TestableLivewire::set\(\) expects string but mixed given#'
+        - '#Method Livewire\\Testing\\TestableLivewire::call\(\) expects string but mixed given#'
+        
+        # Defer/Lazy loading
+        - '#Property .+Component::\$.+ with wire:model.defer has no type#'
+        - '#Property .+Component::\$.+ with wire:model.lazy has no type#'
+        
+        # Polling
+        - '#Method with wire:poll expects int but mixed given#'
+        - '#Property .+Component::\$pollInterval has no type specified#'
+        
+        # Authorization
+        - '#Method .+Component::authorize\(\) should return bool but returns mixed#'
+        - '#Method .+Component::authorizeForUser\(\) expects .+ but mixed given#'

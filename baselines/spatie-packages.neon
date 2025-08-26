@@ -1,0 +1,128 @@
+# Spatie Packages PHPStan Baseline
+# Common Spatie Laravel packages exception patterns
+# Last updated: 2025-08
+
+parameters:
+    ignoreErrors:
+        # ============================================
+        # Laravel Permission
+        # ============================================
+        
+        # Dynamic role/permission methods
+        - '#Call to an undefined method .+::hasRole\(\)#'
+        - '#Call to an undefined method .+::hasPermissionTo\(\)#'
+        - '#Call to an undefined method .+::givePermissionTo\(\)#'
+        - '#Call to an undefined method .+::assignRole\(\)#'
+        
+        # Role/Permission properties
+        - '#Access to an undefined property .+::\$permissions#'
+        - '#Access to an undefined property .+::\$roles#'
+        
+        # ============================================
+        # Laravel Media Library
+        # ============================================
+        
+        # Media collections
+        - '#Call to an undefined method .+::addMedia\(\)#'
+        - '#Call to an undefined method .+::getMedia\(\)#'
+        - '#Call to an undefined method .+::clearMediaCollection\(\)#'
+        
+        # Media conversions
+        - '#Call to an undefined method .+::registerMediaConversions\(\)#'
+        - '#Call to an undefined method .+::registerMediaCollections\(\)#'
+        
+        # Media properties
+        - '#Access to an undefined property .+::\$media#'
+        - '#Property .+::\$media type has no value type#'
+        
+        # ============================================
+        # Laravel Activity Log
+        # ============================================
+        
+        # Activity logging
+        - '#Call to an undefined method .+::activity\(\)#'
+        - '#Call to an undefined method .+::causedBy\(\)#'
+        - '#Call to an undefined method .+::performedOn\(\)#'
+        - '#Call to an undefined method .+::withProperties\(\)#'
+        
+        # Activity properties
+        - '#Access to an undefined property .+::\$activities#'
+        
+        # ============================================
+        # Laravel Query Builder
+        # ============================================
+        
+        # Query builder filters
+        - '#Call to an undefined method .+::allowedFilters\(\)#'
+        - '#Call to an undefined method .+::allowedSorts\(\)#'
+        - '#Call to an undefined method .+::allowedIncludes\(\)#'
+        
+        # ============================================
+        # Laravel Data
+        # ============================================
+        
+        # Data objects
+        - '#Method .+Data::from\(\) expects .+ but mixed given#'
+        - '#Method .+Data::toArray\(\) return type has no value type#'
+        
+        # Data collections
+        - '#Method .+DataCollection::items\(\) return type has no value type#'
+        
+        # ============================================
+        # Laravel Backup
+        # ============================================
+        
+        # Backup commands
+        - '#Call to an undefined static method .+Backup::#'
+        - '#Method .+BackupDestination::.+ has no return type#'
+        
+        # ============================================
+        # Laravel Sluggable
+        # ============================================
+        
+        # Sluggable trait
+        - '#Call to an undefined method .+::sluggable\(\)#'
+        - '#Property .+::\$slug has no type specified#'
+        
+        # ============================================
+        # Laravel Translatable
+        # ============================================
+        
+        # Translation methods
+        - '#Call to an undefined method .+::translate\(\)#'
+        - '#Call to an undefined method .+::translateOrDefault\(\)#'
+        - '#Call to an undefined method .+::getTranslation\(\)#'
+        
+        # Translation properties
+        - '#Access to an undefined property .+::\$translations#'
+        
+        # ============================================
+        # Laravel Tags
+        # ============================================
+        
+        # Taggable trait
+        - '#Call to an undefined method .+::attachTag\(\)#'
+        - '#Call to an undefined method .+::detachTag\(\)#'
+        - '#Call to an undefined method .+::syncTags\(\)#'
+        
+        # Tag properties
+        - '#Access to an undefined property .+::\$tags#'
+        
+        # ============================================
+        # Laravel Settings
+        # ============================================
+        
+        # Settings class
+        - '#Property .+Settings::\$.+ has no type specified#'
+        - '#Method .+Settings::group\(\) has no return type#'
+        
+        # ============================================
+        # Laravel Multitenancy
+        # ============================================
+        
+        # Tenant methods
+        - '#Call to an undefined method .+::makeCurrent\(\)#'
+        - '#Call to an undefined static method .+Tenant::current\(\)#'
+        
+        # Tenant properties
+        - '#Access to an undefined property .+::\$tenant#'

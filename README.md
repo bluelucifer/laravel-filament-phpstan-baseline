@@ -93,9 +93,16 @@ wget https://raw.githubusercontent.com/bluelucifer/laravel-filament-phpstan-base
 
 ### Level-Specific Baselines
 
-- **`level-0-to-2.neon`** - Transition from level 0 to 2
-- **`level-3-to-5.neon`** - Transition from level 3 to 5
-- **`level-6-to-8.neon`** - Transition from level 6 to 8
+- **`level-0-2.neon`** - Levels 0-2 (Basic strictness)
+- **`level-3-5.neon`** - Levels 3-5 (Intermediate strictness)
+- **`level-6-8.neon`** - Levels 6-8 (Advanced strictness)
+- **`level-9-10.neon`** - Levels 9-10 (Maximum strictness)
+
+### Strict Mode Baselines (Additional suppressions for higher levels)
+
+- **`laravel-11-strict.neon`** - Laravel strict mode patterns (levels 3-10)
+- **`filament-3-strict.neon`** - Filament strict mode patterns (levels 3-10)
+- **`livewire-3-strict.neon`** - Livewire strict mode patterns (levels 3-10)
 
 ## 🔧 Usage
 
@@ -139,16 +146,29 @@ Start with permissive baselines and gradually increase strictness:
 ```yaml
 # Level 0-2 (Beginner)
 includes:
-    - .../baselines/level-0-to-2.neon
+    - vendor/bluelucifer/laravel-filament-phpstan/baselines/laravel-11.neon
+    - vendor/bluelucifer/laravel-filament-phpstan/baselines/filament-3.neon
+    - vendor/bluelucifer/laravel-filament-phpstan/baselines/level-0-2.neon
 
 # Level 3-5 (Intermediate)  
 includes:
-    - .../baselines/level-3-to-5.neon
+    - vendor/bluelucifer/laravel-filament-phpstan/baselines/level-3-5.neon
 
 # Level 6-8 (Advanced)
 includes:
-    - .../baselines/level-6-to-8.neon
+    - vendor/bluelucifer/laravel-filament-phpstan/baselines/level-6-8.neon
+
+# Level 9-10 (Maximum)
+includes:
+    - vendor/bluelucifer/laravel-filament-phpstan/baselines/level-9-10.neon
 ```
+
+### Recommended Level Progression
+
+1. **Start (Level 0-2)**: Use basic baselines
+2. **Stabilize (Level 3-5)**: Add `level-3-5.neon`
+3. **Improve (Level 6-8)**: Switch to `level-6-8.neon`
+4. **Perfect (Level 9-10)**: Use `level-9-10.neon` for maximum type safety
 
 ## 🤝 Contributing
 
