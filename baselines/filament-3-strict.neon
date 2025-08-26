@@ -1,0 +1,146 @@
+# Filament 3.x PHPStan Strict Baseline (Levels 3-10)
+# Additional exception patterns for higher PHPStan levels
+# Last updated: 2025-08
+
+parameters:
+    ignoreErrors:
+        # ============================================
+        # Level 3+ Patterns
+        # ============================================
+        
+        # Form/Table state arrays
+        - '#Offset .+ does not exist on array{#'
+        - '#Cannot access offset .+ on Illuminate\\Support\\Collection#'
+        
+        # Nullable form components
+        - '#Method Filament\\Forms\\Components\\.+::make\(\) invoked with \d+ parameters, 0-1 required#'
+        
+        # ============================================
+        # Level 4+ Patterns
+        # ============================================
+        
+        # Action modal chains
+        - '#Result of method Filament\\Actions\\Action::modalHeading\(\) \(void\) is used#'
+        - '#Result of method Filament\\Actions\\Action::modalContent\(\) \(void\) is used#'
+        
+        # Notification chains
+        - '#Result of method Filament\\Notifications\\Notification::title\(\) \(void\) is used#'
+        - '#Result of method Filament\\Notifications\\Notification::body\(\) \(void\) is used#'
+        
+        # ============================================
+        # Level 5+ Patterns
+        # ============================================
+        
+        # Resource method overrides
+        - '#Return type \(.+\) of method .+Resource::getModel\(\) should be covariant#'
+        - '#Parameter \#\d+ \$.+ of method .+Resource::.+ should be contravariant#'
+        
+        # Page property types
+        - '#Property .+Page::\$data type has no value type specified in iterable type array#'
+        - '#Property .+Page::\$record type has no value type specified#'
+        
+        # ============================================
+        # Level 6+ Patterns
+        # ============================================
+        
+        # Missing generic types in collections
+        - '#Method .+::getTableRecords\(\) return type has no value type specified in iterable type#'
+        - '#Method .+::getFormStatePath\(\) return type has no value type specified#'
+        
+        # Widget data arrays
+        - '#Method .+Widget::getData\(\) return type has no value type specified in iterable type array#'
+        - '#Method .+Widget::getColumns\(\) return type has no value type specified#'
+        
+        # ============================================
+        # Level 7+ Patterns
+        # ============================================
+        
+        # Strict null checks on form state
+        - '#Cannot access offset .+ on array\|null#'
+        - '#Parameter \#1 \$state of .+ expects array, array\|null given#'
+        
+        # Table query modifications
+        - '#Method .+::modifyQueryUsing\(\) should return .+ but returns mixed#'
+        - '#Method .+::getTableQuery\(\) should return .+ but returns mixed#'
+        
+        # ============================================
+        # Level 8+ Patterns
+        # ============================================
+        
+        # Component configuration arrays
+        - '#Method Filament\\Forms\\Components\\.+::schema\(\) expects array<.+> but array<int, mixed> given#'
+        - '#Method Filament\\Tables\\Table::columns\(\) expects array<.+> but array<int, mixed> given#'
+        
+        # Relationship manager types
+        - '#Property .+RelationManager::\$relationship \(.+\) does not accept mixed#'
+        - '#Method .+RelationManager::getInverseRelationship\(\) should return string but returns mixed#'
+        
+        # ============================================
+        # Level 9+ Patterns
+        # ============================================
+        
+        # Strict comparisons in conditions
+        - '#Strict comparison using === between .+Component and null will always evaluate#'
+        - '#Strict comparison using !== between Filament\\Forms\\Get and null#'
+        
+        # Always true/false in visibility conditions
+        - '#If condition is always true#'
+        - '#Closure in .+::visible\(\) always returns true#'
+        - '#Closure in .+::disabled\(\) always returns false#'
+        
+        # ============================================
+        # Level 10 Patterns
+        # ============================================
+        
+        # Complete type coverage for Resources
+        - '#Method .+Resource::form\(\) has parameter \$form with no value type specified#'
+        - '#Method .+Resource::table\(\) has parameter \$table with no value type specified#'
+        - '#Method .+Resource::getPages\(\) return type has no value type specified#'
+        
+        # Strict action typing
+        - '#Method .+::action\(\) expects Closure\|null but Closure\|string given#'
+        - '#Method .+::modalActions\(\) expects array<.+> but array<int, mixed> given#'
+        
+        # Navigation typing
+        - '#Method .+::getNavigationBadge\(\) should return string\|null but returns mixed#'
+        - '#Method .+::getNavigationSort\(\) should return int\|null but returns mixed#'
+        
+        # ============================================
+        # Filament-Specific Strict Patterns
+        # ============================================
+        
+        # Panel configuration
+        - '#Method .+::panel\(\) has parameter \$panel with generic class .+ but does not specify its types#'
+        - '#Method .+::configurePanel\(\) should return .+ but returns mixed#'
+        
+        # Plugin registration
+        - '#Method .+Plugin::make\(\) invoked with \d+ parameters, 0 required#'
+        - '#Method .+Plugin::register\(\) has parameter \$panel with no value type#'
+        
+        # Custom fields/columns
+        - '#Class .+ extends generic class Filament\\Forms\\Components\\Field but does not specify its types#'
+        - '#Class .+ extends generic class Filament\\Tables\\Columns\\Column but does not specify its types#'
+        
+        # Macro registration
+        - '#Static method .+::macro\(\) invoked with \d+ parameters, 2 required#'
+        - '#Method .+::mixin\(\) expects object\|string but mixed given#'
+        
+        # Import/Export actions
+        - '#Method .+Importer::resolveRecord\(\) should return .+ but returns mixed#'
+        - '#Method .+Exporter::getColumns\(\) return type has no value type specified#'
+        
+        # Multi-tenancy
+        - '#Method .+::getTenant\(\) should return .+\|null but returns mixed#'
+        - '#Method .+::setTenant\(\) has parameter \$tenant with no value type#'
+        
+        # SPA mode
+        - '#Method .+::spa\(\) invoked with \d+ parameters, 0-1 required#'
+        - '#Property .+::\$isSpa type has no value type specified#'
+        
+        # Global search
+        - '#Method .+::getGloballySearchableAttributes\(\) return type has no value type#'
+        - '#Method .+::getGlobalSearchResultDetails\(\) return type has no value type#'
+        
+        # Filament components lifecycle
+        - '#Method .+Component::setUp\(\) should return void but returns#'
+        - '#Method .+Component::configure\(\) should return static but returns#'

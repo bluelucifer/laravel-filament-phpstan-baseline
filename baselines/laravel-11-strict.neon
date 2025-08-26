@@ -1,0 +1,168 @@
+# Laravel 11.x PHPStan Strict Baseline (Levels 3-10)
+# Additional exception patterns for higher PHPStan levels
+# Last updated: 2025-08
+
+parameters:
+    ignoreErrors:
+        # ============================================
+        # Level 3+ Patterns
+        # ============================================
+        
+        # Null coalescing on potentially defined variables
+        - '#Left side of \?\? is not nullable#'
+        
+        # Array shapes and offsets
+        - '#Offset .+ does not exist on array{#'
+        - '#Array has \d+ duplicate keys with value#'
+        
+        # Request input array shapes
+        - '#Method Illuminate\\Http\\Request::validate\(\) return type with generic#'
+        - '#Method Illuminate\\Foundation\\Http\\FormRequest::validated\(\) return type with generic#'
+        
+        # ============================================
+        # Level 4+ Patterns  
+        # ============================================
+        
+        # Dead code detection (Laravel's conditional loading)
+        - '#Unreachable statement - code above always terminates#'
+        - '#Result of .+ \(void\) is used#'
+        
+        # Middleware termination
+        - '#Method .+::terminate\(\) should return#'
+        
+        # Event listener return types
+        - '#Method .+::handle\(\) should return .+ but return statement is missing#'
+        
+        # ============================================
+        # Level 5+ Patterns
+        # ============================================
+        
+        # Parameter type widening in overrides
+        - '#Parameter \#\d+ \$.+ \(.+\) of method .+ should be contravariant with parameter#'
+        - '#Parameter \#\d+ \$.+ \(.+\) of method .+ should be compatible with parameter#'
+        
+        # Return type narrowing in overrides  
+        - '#Return type \(.+\) of method .+ should be covariant with return type#'
+        
+        # Trait method compatibility
+        - '#Trait method .+ has not been applied, because there are collisions#'
+        
+        # ============================================
+        # Level 6+ Patterns
+        # ============================================
+        
+        # Missing typehints (Laravel convention allows mixed)
+        - '#Method .+ has parameter \$.+ with no value type specified in iterable type#'
+        - '#Method .+ return type has no value type specified in iterable type#'
+        - '#Property .+ type has no value type specified in iterable type#'
+        
+        # Config and env typing
+        - '#Function config\(\) has parameter \$key with no value type#'
+        - '#Function env\(\) has parameter \$key with no value type#'
+        
+        # ============================================
+        # Level 7+ Patterns
+        # ============================================
+        
+        # Union type issues
+        - '#Method .+ should return .+\|null but returns mixed#'
+        - '#Property .+ \(.+\|null\) does not accept mixed#'
+        
+        # Void misuse (Laravel allows fluent interfaces)
+        - '#Result of method .+::dispatch\(\) \(void\) is used#'
+        - '#Result of method .+::save\(\) \(void\) is used#'
+        
+        # Missing array key checks (Laravel collections handle gracefully)
+        - '#Offset .+ on .+ on left side of \?\? does not exist#'
+        
+        # ============================================
+        # Level 8+ Patterns
+        # ============================================
+        
+        # Nullable types in unions
+        - '#Type mixed\|null is redundant#'
+        - '#Null is redundant in union type#'
+        
+        # Template types
+        - '#PHPDoc tag @template .+ for class .+ has invalid bound type#'
+        - '#Template type .+ of method .+ is not referenced#'
+        
+        # Cognitive complexity
+        - '#Cognitive complexity of method .+ is \d+, keep it under#'
+        
+        # ============================================
+        # Level 9+ Patterns
+        # ============================================
+        
+        # Strict comparisons with mixed
+        - '#Strict comparison using .+ between mixed and .+ will always evaluate#'
+        - '#Cannot use array destructuring on mixed#'
+        
+        # Call to parent in root classes
+        - '#Call to parent::__construct\(\) on class without parent#'
+        
+        # Always true/false conditions (Laravel's defensive programming)
+        - '#If condition is always true#'
+        - '#Else branch is unreachable because previous condition is always#'
+        - '#Ternary operator condition is always#'
+        
+        # Type narrowing after instanceof
+        - '#Instanceof between .+ and .+ will always evaluate to#'
+        
+        # ============================================
+        # Level 10 Patterns (Maximum Strictness)
+        # ============================================
+        
+        # Mixed assignments
+        - '#Cannot assign mixed to property .+ of type#'
+        - '#Property .+ on left side of \?\?= is not nullable#'
+        
+        # Complete type coverage
+        - '#Method .+ has no return type specified#'
+        - '#Method .+ has parameter \$.+ with no type specified#'
+        - '#Property .+ has no type specified#'
+        
+        # Implicit mixed usage
+        - '#Implicit usage of mixed type#'
+        - '#Cannot access property .+ on mixed#'
+        - '#Cannot call method .+ on mixed#'
+        
+        # Safe navigation on non-nullable
+        - '#Using nullsafe property access on non-nullable type#'
+        - '#Using nullsafe method call on non-nullable type#'
+        
+        # ============================================
+        # Laravel-Specific Strict Patterns
+        # ============================================
+        
+        # Eloquent strict mode issues
+        - '#Call to static method .+::preventLazyLoading\(\) with true will always evaluate to true#'
+        - '#Call to static method .+::preventSilentlyDiscardingAttributes\(\) with true#'
+        
+        # Blade component typing
+        - '#Method .+::render\(\) should return Illuminate\\Contracts\\Support\\Htmlable\|string but returns#'
+        
+        # Queue job typing
+        - '#Method .+::handle\(\) has parameter \$.+ with generic class .+ but does not specify its types#'
+        
+        # Policy authorization
+        - '#Method .+::authorize\(\) should return bool but returns#'
+        - '#Method .+::before\(\) should return bool\|null but returns#'
+        
+        # Database transaction typing
+        - '#Parameter \#1 \$callback of method .+::transaction\(\) expects Closure#'
+        
+        # Factory state methods
+        - '#Call to an undefined method .+Factory::has[A-Z]#'
+        - '#Call to an undefined method .+Factory::for[A-Z]#'
+        
+        # Validation rule objects
+        - '#Class .+ implements generic interface .+Rule but does not specify its types#'
+        
+        # Artisan command typing
+        - '#Method .+::handle\(\) should return int but returns#'
+        - '#Property .+::\$signature type has no value type#'
+        
+        # Service container bindings
+        - '#Method .+::register\(\) should return void but returns#'
+        - '#Method .+::boot\(\) should return void but returns#'

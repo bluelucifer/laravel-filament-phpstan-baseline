@@ -1,0 +1,40 @@
+# PHPStan Level 9-10 Combined Baseline
+# For maximum strictness with Laravel/Filament
+# Last updated: 2025-08
+
+includes:
+    # All previous patterns
+    - level-6-8.neon
+
+parameters:
+    # At levels 9-10, we want maximum strictness
+    # Only suppress truly framework-specific issues
+    
+    ignoreErrors:
+        # ============================================
+        # Level 9-10 Minimal Suppressions
+        # ============================================
+        
+        # Laravel magic that cannot be typed
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::where[A-Z]#'
+        - '#Access to an undefined property Illuminate\\Http\\Request::\$#'
+        
+        # Filament dynamic components
+        - '#Call to an undefined method Filament\\Forms\\Components\\#'
+        - '#Call to an undefined method Filament\\Tables\\Columns\\#'
+        
+        # Livewire wire:model binding
+        - '#Property .+Component::\$.+ used in wire:model#'
+        
+        # Allow defensive null checks on framework methods
+        - '#Cannot be nullable#'
+        
+        # Framework internal mixed returns
+        - '#Method Illuminate\\.+::make\(\) should return .+ but returns mixed#'
+        - '#Method Filament\\.+::make\(\) should return .+ but returns mixed#'
+        
+    # Strict settings for level 9-10
+    treatPhpDocTypesAsCertain: false
+    checkGenericClassInNonGenericObjectType: true
+    checkMissingIterableValueType: true
+    checkModelProperties: true

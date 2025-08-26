@@ -1,6 +1,6 @@
 {
     "name": "bluelucifer/laravel-filament-phpstan",
-    "description": "Community-maintained PHPStan baseline configurations for Laravel & Filament projects",
+    "description": "Community-maintained PHPStan baseline configurations for Laravel & Filament projects (Levels 0-10)",
     "type": "phpstan-extension",
     "keywords": [
         "phpstan",

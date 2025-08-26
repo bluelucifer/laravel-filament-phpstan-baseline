@@ -1,0 +1,29 @@
+# PHPStan Level 6-8 Combined Baseline
+# For transitioning from intermediate to advanced strictness
+# Last updated: 2025-08
+
+includes:
+    # All previous patterns
+    - level-3-5.neon
+
+parameters:
+    ignoreErrors:
+        # ============================================
+        # Level 6-8 Specific Suppressions
+        # ============================================
+        
+        # Allow iterable without value types in migrations
+        - '#Migration::.+ type has no value type specified in iterable#'
+        
+        # Allow mixed in config files
+        - '#return type has no value type specified in iterable type array#'
+        
+        # Allow union types in route parameters
+        - '#Route model binding .+ expects .+\|null but mixed given#'
+        
+        # Allow certain always true/false conditions in defensive programming
+        - '#If condition is always (true|false)#'
+        - '#Ternary operator condition is always (true|false)#'
+        
+        # Allow cognitive complexity in complex business logic
+        - '#Cognitive complexity of method .+ is \d+, keep it under 10#'

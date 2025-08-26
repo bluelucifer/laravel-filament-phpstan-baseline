@@ -1,0 +1,31 @@
+# PHPStan Level 3-5 Combined Baseline
+# For transitioning from basic to intermediate strictness
+# Last updated: 2025-08
+
+includes:
+    # Basic patterns (levels 0-2)
+    - laravel-11.neon
+    - filament-3.neon
+    - livewire-3.neon
+    
+    # Additional strict patterns for levels 3-5
+    - laravel-11-strict.neon
+    - filament-3-strict.neon
+    - livewire-3-strict.neon
+
+parameters:
+    ignoreErrors:
+        # ============================================
+        # Level 3-5 Specific Suppressions
+        # ============================================
+        
+        # Allow mixed in certain contexts during transition
+        - '#Method .+::(handle|__invoke)\(\) has parameter \$.+ with no type specified#'
+        
+        # Allow missing return types for factories/seeders
+        - '#Method .+Factory::.+ has no return type specified#'
+        - '#Method .+Seeder::.+ has no return type specified#'
+        
+        # Allow test assertions without strict types
+        - '#Method .+Test::.+ has no return type specified#'
+        - '#Method .+TestCase::.+ has parameter \$.+ with no type specified#'
