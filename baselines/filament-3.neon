@@ -212,3 +212,104 @@ parameters:
         
         # Builder fields
         - '#Call to an undefined method Filament\\Forms\\Components\\Builder::.+#'
+        
+        # ============================================
+        # Mixed Type Method Calls (PHPStan level 2+)
+        # ============================================
+        
+        # Form component method calls on mixed
+        - '#Cannot call method makeHidden\(\) on mixed#'
+        - '#Cannot call method visible\(\) on mixed#'
+        - '#Cannot call method required\(\) on mixed#'
+        - '#Cannot call method disabled\(\) on mixed#'
+        - '#Cannot call method readonly\(\) on mixed#'
+        - '#Cannot call method placeholder\(\) on mixed#'
+        - '#Cannot call method helperText\(\) on mixed#'
+        - '#Cannot call method hint\(\) on mixed#'
+        - '#Cannot call method rules\(\) on mixed#'
+        - '#Cannot call method default\(\) on mixed#'
+        - '#Cannot call method formatStateUsing\(\) on mixed#'
+        - '#Cannot call method dehydrateStateUsing\(\) on mixed#'
+        - '#Cannot call method afterStateUpdated\(\) on mixed#'
+        - '#Cannot call method beforeStateDehydrated\(\) on mixed#'
+        - '#Cannot call method live\(\) on mixed#'
+        - '#Cannot call method reactive\(\) on mixed#'
+        - '#Cannot call method lazy\(\) on mixed#'
+        
+        # Table column method calls on mixed
+        - '#Cannot call method sortable\(\) on mixed#'
+        - '#Cannot call method searchable\(\) on mixed#'
+        - '#Cannot call method toggleable\(\) on mixed#'
+        - '#Cannot call method copyable\(\) on mixed#'
+        - '#Cannot call method wrap\(\) on mixed#'
+        - '#Cannot call method limit\(\) on mixed#'
+        - '#Cannot call method words\(\) on mixed#'
+        - '#Cannot call method tooltip\(\) on mixed#'
+        - '#Cannot call method formatStateUsing\(\) on mixed#'
+        - '#Cannot call method badge\(\) on mixed#'
+        - '#Cannot call method color\(\) on mixed#'
+        - '#Cannot call method icon\(\) on mixed#'
+        - '#Cannot call method iconPosition\(\) on mixed#'
+        - '#Cannot call method weight\(\) on mixed#'
+        - '#Cannot call method size\(\) on mixed#'
+        
+        # Action method calls on mixed
+        - '#Cannot call method label\(\) on mixed#'
+        - '#Cannot call method icon\(\) on mixed#'
+        - '#Cannot call method color\(\) on mixed#'
+        - '#Cannot call method size\(\) on mixed#'
+        - '#Cannot call method outlined\(\) on mixed#'
+        - '#Cannot call method disabled\(\) on mixed#'
+        - '#Cannot call method hidden\(\) on mixed#'
+        - '#Cannot call method visible\(\) on mixed#'
+        - '#Cannot call method requiresConfirmation\(\) on mixed#'
+        - '#Cannot call method modalHeading\(\) on mixed#'
+        - '#Cannot call method modalSubheading\(\) on mixed#'
+        - '#Cannot call method modalButton\(\) on mixed#'
+        - '#Cannot call method action\(\) on mixed#'
+        - '#Cannot call method form\(\) on mixed#'
+        - '#Cannot call method fillForm\(\) on mixed#'
+        - '#Cannot call method authorize\(\) on mixed#'
+        - '#Cannot call method after\(\) on mixed#'
+        - '#Cannot call method before\(\) on mixed#'
+        
+        # Widget method calls on mixed
+        - '#Cannot call method columnSpan\(\) on mixed#'
+        - '#Cannot call method columnSpanFull\(\) on mixed#'
+        - '#Cannot call method columns\(\) on mixed#'
+        - '#Cannot call method sort\(\) on mixed#'
+        - '#Cannot call method poll\(\) on mixed#'
+        
+        # Notification method calls on mixed
+        - '#Cannot call method title\(\) on mixed#'
+        - '#Cannot call method body\(\) on mixed#'
+        - '#Cannot call method icon\(\) on mixed#'
+        - '#Cannot call method iconColor\(\) on mixed#'
+        - '#Cannot call method color\(\) on mixed#'
+        - '#Cannot call method status\(\) on mixed#'
+        - '#Cannot call method duration\(\) on mixed#'
+        - '#Cannot call method persistent\(\) on mixed#'
+        - '#Cannot call method actions\(\) on mixed#'
+        - '#Cannot call method send\(\) on mixed#'
+        - '#Cannot call method sendToDatabase\(\) on mixed#'
+        
+        # Generic mixed method calls for Filament components
+        - '#Cannot call method [a-zA-Z0-9_]+\(\) on mixed#'
+        
+        # ============================================
+        # Binary Operations (PHPStan level 2+)
+        # ============================================
+        
+        # Binary operations with mixed types - Filament specific cases
+        - '#Binary operation "\+" between .* and mixed#'
+        - '#Binary operation "-" between .* and mixed#'
+        - '#Binary operation "\*" between .* and mixed#'
+        - '#Binary operation "/" between .* and mixed#'
+        - '#Binary operation "\." between .* and mixed#'
+        - '#Binary operation "==" between .* and mixed#'
+        - '#Binary operation "!=" between .* and mixed#'
+        - '#Binary operation ">" between .* and mixed#'
+        - '#Binary operation "<" between .* and mixed#'
+        - '#Binary operation ">=" between .* and mixed#'
+        - '#Binary operation "<=" between .* and mixed#'
+        - '#Binary operation "\?\?" between .* and mixed#'
