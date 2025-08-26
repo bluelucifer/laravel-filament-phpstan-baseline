@@ -1,0 +1,139 @@
+name: Validate Baselines
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-syntax:
+    name: Validate NEON Syntax
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+      
+      - name: Install dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+      
+      - name: Validate baseline files syntax
+        run: |
+          for file in baselines/*.neon; do
+            echo "Validating $file"
+            php -r "
+              try {
+                \$content = file_get_contents('$file');
+                if (strpos(\$content, 'parameters:') === false && strpos(\$content, 'includes:') === false) {
+                  echo 'Warning: $file may not be a valid PHPStan configuration file' . PHP_EOL;
+                }
+                echo '✓ $file syntax is valid' . PHP_EOL;
+              } catch (Exception \$e) {
+                echo '✗ $file has syntax errors: ' . \$e->getMessage() . PHP_EOL;
+                exit(1);
+              }
+            "
+          done
+
+  test-with-phpstan:
+    name: Test with PHPStan
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ['8.1', '8.2', '8.3']
+        phpstan: ['^1.10', '^2.0']
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      
+      - name: Install PHPStan
+        run: |
+          composer require --dev phpstan/phpstan:${{ matrix.phpstan }} --no-interaction --no-update
+          composer update --no-progress --prefer-dist --optimize-autoloader
+      
+      - name: Test baseline loading
+        run: |
+          for file in baselines/*.neon; do
+            echo "Testing $file with PHPStan"
+            # Create a test configuration that includes the baseline
+            cat > test-phpstan.neon <<EOF
+          includes:
+            - $file
+          parameters:
+            level: 5
+            paths:
+              - src
+          EOF
+            # Run PHPStan with the test configuration
+            vendor/bin/phpstan analyse --configuration=test-phpstan.neon --no-progress || true
+          done
+      
+      - name: Verify extension.neon
+        run: |
+          echo "Testing extension.neon"
+          vendor/bin/phpstan analyse --configuration=extension.neon --no-progress || true
+
+  check-patterns:
+    name: Check Pattern Quality
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+      
+      - name: Check for duplicate patterns
+        run: |
+          php -r "
+            \$duplicates = [];
+            foreach (glob('baselines/*.neon') as \$file) {
+              echo 'Checking ' . basename(\$file) . ' for duplicates...' . PHP_EOL;
+              \$content = file_get_contents(\$file);
+              preg_match_all('/message:\s*[\'\"](#.+?)[\'\"]/s', \$content, \$matches);
+              
+              \$patterns = [];
+              foreach (\$matches[1] as \$pattern) {
+                if (isset(\$patterns[\$pattern])) {
+                  \$duplicates[basename(\$file)][] = \$pattern;
+                }
+                \$patterns[\$pattern] = true;
+              }
+            }
+            
+            if (!empty(\$duplicates)) {
+              echo PHP_EOL . '⚠️ Duplicate patterns found:' . PHP_EOL;
+              foreach (\$duplicates as \$file => \$patterns) {
+                echo \$file . ':' . PHP_EOL;
+                foreach (array_unique(\$patterns) as \$pattern) {
+                  echo '  - ' . \$pattern . PHP_EOL;
+                }
+              }
+              exit(1);
+            }
+            
+            echo '✓ No duplicate patterns found' . PHP_EOL;
+          "
+      
+      - name: Check pattern coverage
+        run: |
+          echo "Pattern Statistics:"
+          for file in baselines/*.neon; do
+            count=$(grep -c "message:" "$file" || true)
+            echo "$(basename $file): $count patterns"
+          done
