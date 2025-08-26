@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ask a Question
+    url: https://github.com/laravel-filament/phpstan-baseline/discussions
+    about: Ask questions and discuss general topics in our GitHub Discussions
+  - name: Laravel Documentation
+    url: https://laravel.com/docs
+    about: Find information about Laravel framework
+  - name: Filament Documentation
+    url: https://filamentphp.com/docs
+    about: Find information about Filament admin panel
+  - name: PHPStan Documentation
+    url: https://phpstan.org/user-guide/getting-started
+    about: Learn more about PHPStan static analysis tool

@@ -1,0 +1,110 @@
+name: Bug Report
+description: File a bug report to help us improve
+title: "[Bug]: "
+labels: ["bug", "triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+        
+  - type: input
+    id: contact
+    attributes:
+      label: Contact Details
+      description: How can we get in touch with you if we need more info?
+      placeholder: ex. email@example.com
+    validations:
+      required: false
+      
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Also tell us, what did you expect to happen?
+      placeholder: Tell us what you see!
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: version
+    attributes:
+      label: Version
+      description: What version of Laravel are you running?
+      options:
+        - Laravel 11
+        - Laravel 10
+        - Laravel 9
+        - Other (please specify in description)
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: filament-version
+    attributes:
+      label: Filament Version
+      description: What version of Filament are you using?
+      options:
+        - Filament 3.x
+        - Filament 2.x
+        - Other (please specify in description)
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: phpstan-level
+    attributes:
+      label: PHPStan Level
+      description: What PHPStan level are you using?
+      options:
+        - Level 0-2
+        - Level 3-5
+        - Level 6-8
+        - Level 9-10
+        - Custom configuration
+    validations:
+      required: true
+      
+  - type: textarea
+    id: baseline-config
+    attributes:
+      label: Baseline Configuration
+      description: What baseline configuration are you using?
+      placeholder: |
+        e.g., filament-3.neon, laravel-11-strict.neon, custom configuration
+      render: yaml
+    validations:
+      required: true
+      
+  - type: textarea
+    id: error-output
+    attributes:
+      label: Error Output
+      description: Please copy and paste the PHPStan error output.
+      render: shell
+    validations:
+      required: true
+      
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Please provide detailed steps to reproduce the issue.
+      placeholder: |
+        1. Install Laravel with version X
+        2. Install Filament with version Y
+        3. Configure PHPStan with baseline Z
+        4. Run PHPStan analysis
+        5. See error
+    validations:
+      required: true
+      
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](CODE_OF_CONDUCT.md)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
