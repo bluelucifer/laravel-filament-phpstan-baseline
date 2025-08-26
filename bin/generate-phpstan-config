@@ -1,0 +1,44 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * CLI tool to generate PHPStan configuration based on detected packages
+ */
+
+// Find autoloader
+$autoloadPaths = [
+    __DIR__ . '/../vendor/autoload.php',
+    __DIR__ . '/../../../autoload.php',
+    __DIR__ . '/../../../../vendor/autoload.php',
+];
+
+$autoloadFound = false;
+foreach ($autoloadPaths as $autoloadPath) {
+    if (file_exists($autoloadPath)) {
+        require $autoloadPath;
+        $autoloadFound = true;
+        break;
+    }
+}
+
+if (!$autoloadFound) {
+    echo "Error: Could not find autoloader. Please run 'composer install' first.\n";
+    exit(1);
+}
+
+use BlueLucifer\LaravelFilamentPHPStan\LaravelFilamentPHPStan;
+
+echo "🔍 Detecting Laravel/Filament packages...\n\n";
+
+$outputPath = $argv[1] ?? 'phpstan-laravel.neon';
+
+try {
+    LaravelFilamentPHPStan::generateConfig($outputPath);
+    echo "\n✅ Configuration successfully generated!\n";
+    echo "Add this to your phpstan.neon:\n\n";
+    echo "includes:\n";
+    echo "    - $outputPath\n";
+} catch (\Exception $e) {
+    echo "❌ Error: " . $e->getMessage() . "\n";
+    exit(1);
+}

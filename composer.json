@@ -1,0 +1,57 @@
+{
+    "name": "bluelucifer/laravel-filament-phpstan",
+    "description": "Community-maintained PHPStan baseline configurations for Laravel & Filament projects",
+    "type": "phpstan-extension",
+    "keywords": [
+        "phpstan",
+        "laravel",
+        "filament",
+        "livewire",
+        "static-analysis",
+        "code-quality",
+        "baseline",
+        "larastan"
+    ],
+    "homepage": "https://github.com/bluelucifer/laravel-filament-phpstan-baseline",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Laravel & Filament Community",
+            "homepage": "https://github.com/bluelucifer/laravel-filament-phpstan-baseline/contributors"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/bluelucifer/laravel-filament-phpstan-baseline/issues",
+        "source": "https://github.com/bluelucifer/laravel-filament-phpstan-baseline"
+    },
+    "require": {
+        "php": "^8.1",
+        "phpstan/phpstan": "^1.10 || ^2.0"
+    },
+    "require-dev": {
+        "larastan/larastan": "^2.0 || ^3.0"
+    },
+    "suggest": {
+        "larastan/larastan": "For Laravel-specific PHPStan rules and extensions"
+    },
+    "extra": {
+        "phpstan": {
+            "includes": [
+                "extension.neon"
+            ]
+        }
+    },
+    "bin": [
+        "bin/generate-phpstan-config"
+    ],
+    "autoload": {
+        "psr-4": {
+            "BlueLucifer\\LaravelFilamentPHPStan\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

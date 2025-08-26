@@ -27,38 +27,50 @@ Instead of each project maintaining its own ignore patterns, this repository pro
 
 ## 🚀 Quick Start
 
-### Option 1: Include via URL (Recommended)
+### Option 1: Composer Package (Recommended)
+
+```bash
+composer require --dev bluelucifer/laravel-filament-phpstan
+```
+
+Then add to your `phpstan.neon`:
+
+```yaml
+includes:
+    - vendor/larastan/larastan/extension.neon
+    # Automatically includes detected baselines
+    - vendor/bluelucifer/laravel-filament-phpstan/extension.neon
+```
+
+Or use automatic detection:
+
+```bash
+# Generate config based on installed packages
+vendor/bin/generate-phpstan-config
+
+# This creates phpstan-laravel.neon with detected baselines
+```
+
+### Option 2: Manual Selection
+
+After installing via Composer, manually choose baselines:
 
 ```yaml
 # phpstan.neon
 includes:
     - vendor/larastan/larastan/extension.neon
-    # Include our baseline directly from GitHub
-    - https://raw.githubusercontent.com/bluelucifer/laravel-filament-phpstan-baseline/main/baselines/laravel-11.neon
-    - https://raw.githubusercontent.com/bluelucifer/laravel-filament-phpstan-baseline/main/baselines/filament-3.neon
+    # Choose specific baselines
+    - vendor/bluelucifer/laravel-filament-phpstan/baselines/laravel-11.neon
+    - vendor/bluelucifer/laravel-filament-phpstan/baselines/filament-3.neon
+    - vendor/bluelucifer/laravel-filament-phpstan/baselines/livewire-3.neon
 ```
 
-### Option 2: Download and Include Locally
+### Option 3: Direct Download (Without Composer)
 
 ```bash
 # Download the baselines you need
-wget https://raw.githubusercontent.com/bluelucifer/laravel-filament-phpstan-baseline/main/baselines/laravel-11.neon -O phpstan-laravel-baseline.neon
-wget https://raw.githubusercontent.com/bluelucifer/laravel-filament-phpstan-baseline/main/baselines/filament-3.neon -O phpstan-filament-baseline.neon
-
-# Include in your phpstan.neon
-```
-
-```yaml
-includes:
-    - vendor/larastan/larastan/extension.neon
-    - phpstan-laravel-baseline.neon
-    - phpstan-filament-baseline.neon
-```
-
-### Option 3: Composer Package (Future)
-
-```bash
-composer require --dev bluelucifer/laravel-filament-phpstan-baseline
+wget https://raw.githubusercontent.com/bluelucifer/laravel-filament-phpstan-baseline/main/baselines/laravel-11.neon
+wget https://raw.githubusercontent.com/bluelucifer/laravel-filament-phpstan-baseline/main/baselines/filament-3.neon
 ```
 
 ## 📦 Available Baselines
@@ -87,7 +99,16 @@ composer require --dev bluelucifer/laravel-filament-phpstan-baseline
 
 ## 🔧 Usage
 
-### Basic Configuration
+### With Composer Package
+
+```bash
+# Install the package
+composer require --dev bluelucifer/laravel-filament-phpstan
+
+# Option A: Use automatic configuration
+vendor/bin/generate-phpstan-config
+
+# Option B: Manual configuration
 
 ```yaml
 # phpstan.neon

@@ -1,0 +1,23 @@
+# PHPStan Extension Configuration
+# This file is automatically loaded when the package is installed via Composer
+
+# You can include specific baseline combinations based on your needs
+# Uncomment the baselines you want to use:
+
+includes:
+    # Laravel Framework (choose version)
+    - baselines/laravel-11.neon    # Laravel 11.x
+    # - baselines/laravel-10.neon  # Laravel 10.x (when available)
+    
+    # Admin Panels (choose one if using)
+    # - baselines/filament-3.neon  # Filament v3.x
+    # - baselines/filament-2.neon  # Filament v2.x (when available)
+    # - baselines/laravel-nova.neon # Laravel Nova (when available)
+    
+    # Frontend Frameworks
+    # - baselines/livewire-3.neon  # Livewire v3.x
+    # - baselines/inertia.neon     # Inertia.js (when available)
+    
+    # Common Packages
+    # - baselines/laravel-excel.neon # Laravel Excel
+    # - baselines/spatie-packages.neon # Spatie packages (when available)
